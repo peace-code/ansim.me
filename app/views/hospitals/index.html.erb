@@ -1,29 +1,46 @@
-<h1>Listing hospitals</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Address</th>
-    <th>coordinates</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @hospitals.each do |hospital| %>
-  <tr>
-    <td><%= hospital.name %></td>
-    <td><%= hospital.description %></td>
-    <td><%= hospital.address %></td>
-    <td><%= hospital.coordinates %></td>
-    <td><%= link_to 'Show', hospital %></td>
-    <td><%= link_to 'Edit', edit_hospital_path(hospital) %></td>
-    <td><%= link_to 'Destroy', hospital, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+<%- model_class = Hospital -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:_type) %></th>
+      <th><%= model_class.human_attribute_name(:_id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:description) %></th>
+      <th><%= model_class.human_attribute_name(:address) %></th>
+      <th><%= model_class.human_attribute_name(:coordinates) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hospitals.each do |hospital| %>
+      <tr>
+        <td><%= link_to hospital.id, hospital_path(hospital) %></td>
+        <td><%= hospital._type %></td>
+        <td><%= hospital._id %></td>
+        <td><%= hospital.name %></td>
+        <td><%= hospital.description %></td>
+        <td><%= hospital.address %></td>
+        <td><%= hospital.coordinates %></td>
+        <td><%=l hospital.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_hospital_path(hospital), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      hospital_path(hospital),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<br />
-
-<%= link_to 'New Hospital', new_hospital_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_hospital_path,
+            :class => 'btn btn-primary' %>

@@ -5,6 +5,9 @@ class Hospital
 
   field :name
   field :description
+  field :phone
+  field :homepage
+
   field :address
   field :coordinates, type: Array
 end

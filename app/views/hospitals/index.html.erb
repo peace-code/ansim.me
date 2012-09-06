@@ -1,46 +1,80 @@
-<%- model_class = Hospital -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
-</div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:_type) %></th>
-      <th><%= model_class.human_attribute_name(:_id) %></th>
-      <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:description) %></th>
-      <th><%= model_class.human_attribute_name(:address) %></th>
-      <th><%= model_class.human_attribute_name(:coordinates) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @hospitals.each do |hospital| %>
-      <tr>
-        <td><%= link_to hospital.id, hospital_path(hospital) %></td>
-        <td><%= hospital._type %></td>
-        <td><%= hospital._id %></td>
-        <td><%= hospital.name %></td>
-        <td><%= hospital.description %></td>
-        <td><%= hospital.address %></td>
-        <td><%= hospital.coordinates %></td>
-        <td><%=l hospital.created_at %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_hospital_path(hospital), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      hospital_path(hospital),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<section class='hospitals index list'>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_hospital_path,
-            :class => 'btn btn-primary' %>
+  <%- model_class = Hospital -%>
+  <div class="page-header">
+    <h1><%=t '.title', :default => model_class.model_name.human.pluralize %><%= content_tag :small, Hospital.all.count %></h1>
+  </div>
+
+  <div id='map_canvas' class='map' style='height:300px;margin-bottom:2em;'>
+  </div>
+  <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript">
+    function initializeMap() {
+      var myOptions = {
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+      var markerBounds = new google.maps.LatLngBounds();
+      var infoWindow = new google.maps.InfoWindow({content: 'Loading...'})
+
+      // markers
+      var locations = [
+        <% @hospitals.each do |hospital| %>
+          [<%= raw hospital.to_json %>],
+        <% end %>
+      ]
+
+      for(var i=0; i < locations.length; i++) {
+        var loc = locations[i][0];
+        var point = new google.maps.LatLng(loc['coordinates'][0], loc['coordinates'][1]);
+        var marker = new google.maps.Marker({
+          position: point,
+          map: map,
+          animation: google.maps.Animation.DROP,
+          title: loc['title'],
+          infoHtml: ['<a href="/hospitals/',loc['_id'],'"><h3>',loc['name'],'</h3></a>'].join('')
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infoWindow.setContent(this.infoHtml);
+          infoWindow.open(map,this);
+        });
+
+        markerBounds.extend(point);
+      }
+
+      map.fitBounds(markerBounds);
+
+    }
+    $(document).ready(function(){
+      initializeMap();
+    });
+  </script>
+
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= model_class.human_attribute_name(:name) %></th>
+        <th><%= model_class.human_attribute_name(:address) %></th>
+        <th><%= model_class.human_attribute_name(:coordinates) %></th>
+        <th><%= model_class.human_attribute_name(:created_at) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @hospitals.each do |hospital| %>
+        <tr>
+          <td><%= hospital.name %></td>
+          <td><%= hospital.address %></td>
+          <td><%= hospital.coordinates %></td>
+          <td><%=l hospital.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to t('.new', :default => t("helpers.links.new")),
+              new_hospital_path,
+              :class => 'btn btn-primary' %>
+</section>

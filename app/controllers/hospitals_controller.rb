@@ -6,7 +6,7 @@ class HospitalsController < ApplicationController
     @south_west = params[:south_west].split(',').map(&:to_f) if params[:south_west]
 
     if @north_east && @south_west
-      @hospitals = Hospital.where(coordinates: {'$within' => {'$box' => [@south_west, @north_east]}})
+      @hospitals = Hospital.where(coordinates: {'$within' => {'$box' => [@south_west, @north_east]}}).limit(300)
     else
       @hospitals = Hospital.page(params[:page])
     end

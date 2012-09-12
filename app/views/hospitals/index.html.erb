@@ -31,7 +31,6 @@
     </tbody>
   </table>
 
-  <%= link_to t('.new', :default => t("helpers.links.new")),
-              new_hospital_path,
-              :class => 'btn btn-primary' %>
+  <%= paginate @hospitals, :theme => 'twitter-bootstrap' %>
+
 </section>

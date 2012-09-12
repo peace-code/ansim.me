@@ -8,7 +8,7 @@ class HospitalsController < ApplicationController
     if @north_east && @south_west
       @hospitals = Hospital.where(coordinates: {'$within' => {'$box' => [@south_west, @north_east]}})
     else
-      @hospitals = Hospital.all  
+      @hospitals = Hospital.page(params[:page])
     end
 
     respond_to do |format|

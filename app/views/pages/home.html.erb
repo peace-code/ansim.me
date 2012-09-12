@@ -15,20 +15,35 @@
     }
 
   	function place_markers(data) {
+      var new_makers_count = 0;
+
   		for(var i=0; i < data.length; i++) {
-
         var id = data[i]._id;
-
         if (window.exists_in_markers(id)) {
           // skip
         } else {
+
+          var pinColor = ["39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][data[i].antibiotics-1];
+          var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+              new google.maps.Size(21, 34),
+              new google.maps.Point(0,0),
+              new google.maps.Point(10, 34));
+          var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+              new google.maps.Size(40, 37),
+              new google.maps.Point(0, 0),
+              new google.maps.Point(12, 35));
+
           marker = new google.maps.Marker({
             map:map,
-            position: new google.maps.LatLng(data[i].coordinates[0], data[i].coordinates[1])
+            position: new google.maps.LatLng(data[i].coordinates[1], data[i].coordinates[0]),
+            icon: pinImage,
+            shadow: pinShadow
           });
           markers.push({ id: id, marker: marker });          
+          new_makers_count++;
         }
   		}
+      console.log("load " + data.length + " data & new "+ new_makers_count +" markers");
   	}
 
   	function fetch_data() {
@@ -36,8 +51,8 @@
 			var map = this;
   		var bounds = map.getBounds();
 			$jqXHR = $.getJSON(url, {
-										north_east: bounds.getNorthEast().lat() + ',' + bounds.getNorthEast().lng(),
-										south_west: bounds.getSouthWest().lat() + ',' + bounds.getSouthWest().lng()
+										north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
+										south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat()
 								}).success(function(data) { 
 									place_markers(data);
 								});

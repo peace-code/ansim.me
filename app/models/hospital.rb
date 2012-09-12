@@ -10,4 +10,6 @@ class Hospital
 
   field :address
   field :coordinates, type: Array
+
+  index({ coordinates: "2d" })
 end

@@ -24,9 +24,12 @@ namespace :data do
 			p hospital.address
 			url = "http://apis.daum.net/local/geo/addr2coord?apikey=d6c46bdc42bfcbadad8458e2699b991423207468&output=json&q=#{hospital.address}"
 			result = JSON.parse(open(URI.encode(url)).read)
-			item = result['channel']['item'].first
-			hospital.coordinates = [item['lng'], item['lat']]
-			hospital.save()
+			items = result['channel']['item']
+			unless items.blank?
+				item = items.first
+				hospital.coordinates = [item['lng'], item['lat']]
+				hospital.save()
+			end
 		end
 	end
 end

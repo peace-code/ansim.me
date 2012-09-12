@@ -1,11 +1,25 @@
 <section id='map_section'>
-  <div id='map_canvas' class='map' style='height:600px;margin-bottom:2em;'>
+  <div id='map_canvas' class='map' style='width:100%;height:600px;margin-bottom:2em;'>
   </div>
   <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript">
 
   	var map;
   	var markers = [];
+
+    function initializeMap() {
+      var myOptions = {
+        zoom: 15,
+        center: new google.maps.LatLng(37.49227,126.89779),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+      google.maps.event.addListener(map, 'mouseup', fetch_data);
+      google.maps.event.addListener(map, 'zoom_changed', fetch_data);
+      google.maps.event.addListener(map, 'idle', fetch_data);
+    }
 
     function exists_in_markers(id) {
       for(i in markers) {
@@ -57,20 +71,6 @@
 									place_markers(data);
 								});
   	}
-
-    function initializeMap() {
-      var myOptions = {
-      	zoom: 15,
-      	center: new google.maps.LatLng(37.49227,126.89779),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-
-			map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-  		google.maps.event.addListener(map, 'mouseup', fetch_data);
-  		google.maps.event.addListener(map, 'zoom_changed', fetch_data);
-  		google.maps.event.addListener(map, 'idle', fetch_data);
-    }
 
     $(document).ready(function(){
       initializeMap();

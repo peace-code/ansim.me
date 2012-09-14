@@ -1,13 +1,27 @@
 <section id='map_section'>
   <div id='map_canvas' class='map' style='width:100%;height:600px;margin-bottom:2em;'>
   </div>
+  <div id='map_info'></div>
+
+  <script id="map_info_template" type="text/x-jquery-tmpl">
+    <div class='inner'>
+      <h3>{{name}}</h3>
+      <p>{{address}}</p>
+      <p>{{phone}}</p>
+    </div>
+  </script>
+
   <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript">
-
   	var map;
   	var markers = [];
+    var cities = {};
 
-    function initializeMap() {
+    <% City.cities.each do |city| %>
+      cities["<%= city.city %>"] = new google.maps.LatLng(<%= city.coordinates[1] %>, <%= city.coordinates[0] %>);
+    <% end %>
+
+    function initialize_map() {
       var myOptions = {
         zoom: 15,
         center: new google.maps.LatLng(37.49227,126.89779),
@@ -26,6 +40,24 @@
         if (markers[i].id == id) return true 
       }
       return false;
+    }
+
+    function show_hospital_overlay(id) {
+      var $info = $('#map_info');
+      var $canvas = $('#map_canvas');
+      var url = '/hospitals/' + id;
+
+      $.getJSON(url)
+          .success(function(data) {
+            var html = _.template($('#map_info_template').html(), data);
+
+            console.log(id, data);
+
+            $info.html(html);
+            $info.width($canvas.width());
+            $info.offset($canvas.offset());
+            $info.show();
+          });
     }
 
   	function place_markers(data) {
@@ -51,9 +83,15 @@
             map:map,
             position: new google.maps.LatLng(data[i].coordinates[1], data[i].coordinates[0]),
             icon: pinImage,
-            shadow: pinShadow
+            shadow: pinShadow,
+            title: id
           });
-          markers.push({ id: id, marker: marker });          
+
+          google.maps.event.addListener(marker, 'click', function() {
+            window.show_hospital_overlay(this.title);
+          });
+
+          markers.push({ id: id, marker: marker });
           new_makers_count++;
         }
   		}
@@ -73,7 +111,7 @@
   	}
 
     $(document).ready(function(){
-      initializeMap();
+      initialize_map();
     });
   </script>
 </section>

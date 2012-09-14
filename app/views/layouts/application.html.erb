@@ -33,7 +33,9 @@
           <a class="brand" href="/">안심병원</a>
           <div class="container nav-collapse">
             <ul class="nav">
-              <li><%= link_to "병원목록", hospitals_path %></li>
+              <li><%= link_to "지도로 보기", root_path %></li>
+              <li><%= link_to "목록으로 보기", hospitals_path %></li>
+              <li><%= link_to "문의하기", hospitals_path %></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -45,18 +47,27 @@
         <div class="row-fluid">
             <div class="span3">
               <div class="well sidebar-nav">
-                <h3>메뉴</h3>
+                <h3>지도로 보기</h3>
+                <ul class="nav nav-list" style='margin-bottom:2em;'>
+                  <li class="nav-header">보고 싶은 데이터를 클릭하세요</li>
+                  <li><a href='#'>항생제처방률</a></li>
+                  <li><a href='#'>주사제처방률 - 준비중</a></li>
+                  <li><a href='#'>진료결과(암수술사망률) - 준비중</a></li>
+                </ul>
+
                 <ul class="nav nav-list">
-                  <li class="nav-header">항생제처방률</li>
-                  <li><a href='#'>1등급</a></li>
-                  <li><a href='#'>2등급</a></li>
-                  <li><a href='#'>3등급</a></li>
-                  <li><a href='#'>4등급</a></li>
-                  <li><a href='#'>5등급</a></li>
+                  <li class="nav-header">지역 선택</li>
+                  <li><%= select_tag(:search_city, options_for_select(['시/도'] + City.all.distinct(:city))) %></li>
+                  <!--
+                  <li><%= select_tag(:search_sub_city, options_for_select(['시/군/구'] + City.all.distinct(:city))) %></li>
+                  <li><input type='text' placeholder='병원'></li>
+                -->
+                  <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li>
                 </ul>
               </div><!--/.well -->
 
               <p>현재 개발중인 데이터입니다. <br>병원을 선택하는 기준으로 참고하지 마세요.</p>
+              <p>더 자세한 정보는 <a href='http://www.hira.or.kr/rec_infopub.hospinfo.do?method=listDiagEvl&pgmid=HIRAA030004000000' target='_new'>건강보험심사평가원</a>에서 볼 수 있습니다.</p>
             </div><!--/span-->
            <div class="span9">
               <%= yield %>
@@ -65,7 +76,7 @@
       </div><!--/content-->
 
       <footer>
-        <p>&copy; Company 2012</p>
+        <p>presented by <a href='http://codenamu.org/' target='_blank'>코드나무</a> 2012</p>
       </footer>
 
     </div> <!-- /container -->

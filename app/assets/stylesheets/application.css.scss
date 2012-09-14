@@ -11,3 +11,19 @@
  *= require_self
  *= require_tree .
  */
+
+#map_info {
+	background-color: rgba(0,0,0,0.7);
+	color: #fff;
+	display: none;
+	position: absolute;
+	div.inner {
+		margin: 1em;
+	}
+}
+
+footer {
+	border-top: 1px solid #DDD;
+	margin-top: 1em;
+	padding-top: 1em;
+}

@@ -24,6 +24,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'underscore-rails'
 gem 'simple_form'
 gem 'bootstrap-kaminari-views'
 

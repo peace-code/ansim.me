@@ -22,6 +22,8 @@ class HospitalsController < ApplicationController
   def show
     @hospital = Hospital.find(params[:id])
 
+    logger.info @hospital
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @hospital }

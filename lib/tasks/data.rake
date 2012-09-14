@@ -5,9 +5,7 @@ require 'json'
 namespace :data do
 	desc "load data"
 	task :load_file => :environment do
-
 		Hospital.delete_all
-
 		CSV.parse(File.read("#{Rails.root.to_s}/db/hos-u8.csv")) do |row|
 			p row
 			code, name, category, phone, zipcode, address, antibiotics = row
@@ -30,6 +28,16 @@ namespace :data do
 				hospital.coordinates = [item['lng'], item['lat']]
 				hospital.save()
 			end
+		end
+	end
+
+	desc "city"
+	task :city => :environment do
+		City.delete_all
+		CSV.parse(File.read("#{Rails.root.to_s}/db/city.txt"), col_sep:"\t") do |row|
+			p row
+			city, subcity = row
+			City.create( city: city, subcity: subcity, address: "#{city} #{subcity}")
 		end
 	end
 end

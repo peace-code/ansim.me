@@ -12,5 +12,27 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
+//= require underscore
 //= require twitter/bootstrap
 //= require_tree .
+
+_.templateSettings = {
+  interpolate : /\{\{(.+?)\}\}/g
+};
+
+$(document).ready(function() {
+	$('#search_btn').on('click', function(){
+		var point = cities[$('#search_city').val()];
+		if (point) {
+			map.setCenter(point);
+			map.setZoom(14);
+		}
+	});
+	$('#search_city').on('change', function(){
+		
+	});
+	$('#search_subcity').on('change', function(){
+		
+	});
+});

@@ -5,9 +5,11 @@
 
   <script id="map_info_template" type="text/x-jquery-tmpl">
     <div class='inner'>
-      <h3>{{name}}</h3>
-      <p>{{address}}</p>
-      <p>{{phone}}</p>
+      <h3>{{name}} <small>항생제처방률 {{antibiotics}}등급</small></h3>
+      <p>
+        <span class='address' style='margin-right:1em'><i class='icon-map-marker'></i> {{address}}</span>
+        <span class='phone'><i class='icon-user'></i> {{phone}}</span>
+      </p>
     </div>
   </script>
 

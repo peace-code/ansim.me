@@ -4,19 +4,17 @@
   <div class="page-header">
     <h1>
       <%=t '.title', :default => model_class.model_name.human.pluralize %>
-      <%= content_tag :small, Hospital.all.count %>
+      <%= content_tag :small, "#{number_with_delimiter(Hospital.all.count)}건" %>
     </h1>
   </div>
-
-  <p><%= @north_east %> ~ <%= @south_west %></p>
 
   <table class="table table-striped">
     <thead>
       <tr>
         <th><%= model_class.human_attribute_name(:name) %></th>
         <th><%= model_class.human_attribute_name(:address) %></th>
-        <th><%= model_class.human_attribute_name(:coordinates) %></th>
-        <th><%= model_class.human_attribute_name(:created_at) %></th>
+        <th><%= model_class.human_attribute_name(:phone) %></th>
+        <th><%= model_class.human_attribute_name(:antibiotics) %></th>
       </tr>
     </thead>
     <tbody>
@@ -24,8 +22,8 @@
         <tr>
           <td><%= hospital.name %></td>
           <td><%= hospital.address %></td>
-          <td><%= hospital.coordinates %></td>
-          <td><%=l hospital.created_at %></td>
+          <td><%= hospital.phone %></td>
+          <td><%= hospital.antibiotics %></td>
         </tr>
       <% end %>
     </tbody>

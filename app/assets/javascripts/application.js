@@ -25,7 +25,7 @@ $(document).ready(function() {
 	$('#search_btn').on('click', function(){
 		var point = cities[$('#search_city').val()];
 		if (point) {
-			$('map_info').hide();
+			$('#map_info').hide();
 			map.setCenter(point);
 			map.setZoom(14);
 		}

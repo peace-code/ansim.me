@@ -8,7 +8,9 @@ class HospitalsController < ApplicationController
     if @north_east && @south_west
       @hospitals = Hospital.where(coordinates: {'$within' => {'$box' => [@south_west, @north_east]}}).limit(300)
     else
-      @hospitals = Hospital.page(params[:page])
+      @search_name = params[:search_name]
+      @hospitals = Hospital.where(name: /#{@search_name}/) if @search_name
+      @hospitals = @hospitals.page(params[:page])
     end
 
     respond_to do |format|

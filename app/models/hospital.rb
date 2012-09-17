@@ -20,4 +20,8 @@ class Hospital
   # after_validation :geocode
 
   index({ coordinates: "2d" })
+
+  def self.categories
+    Hospital.all.distinct(:category)
+  end
 end

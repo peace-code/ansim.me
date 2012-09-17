@@ -10,6 +10,7 @@ class Hospital
   field :phone
   field :homepage
   field :antibiotics
+  field :injections
 
   field :zipcode
   field :address

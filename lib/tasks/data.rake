@@ -3,17 +3,33 @@ require 'open-uri'
 require 'json'
 
 namespace :data do
+
+	DATAFILE = "#{Rails.root.to_s}/db/hos-1-u8.csv"
+
 	desc "load data"
 	task :load_file => :environment do
 		Hospital.delete_all
-		CSV.parse(File.read("#{Rails.root.to_s}/db/hos-u8.csv")) do |row|
+		CSV.parse(File.read(DATAFILE)) do |row|
 			p row
-			code, name, category, phone, zipcode, address, antibiotics = row
+			code, name, category, phone, zipcode, address, antibiotics, injections = row
 			Hospital.create( code: code, name: name, category: category, phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics)
 		end
-
-		Hospital.first.remove
 	end	
+
+	desc "update data"
+	task :update => :environment do
+		CSV.parse(File.read(DATAFILE)) do |row|
+			code, name, category, phone, zipcode, address, antibiotics, injections = row
+			hospital = Hospital.where(code: code).first
+			if hospital
+				hospital.update_attributes(phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics, injections: injections)
+				p "updated #{code}"
+			else
+				Hospital.create( code: code, name: name, category: category, phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics)
+				p "created #{code}"
+			end
+		end
+	end
 
 	desc "geocode"
 	task :geocode => :environment do

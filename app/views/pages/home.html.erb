@@ -49,6 +49,13 @@
       google.maps.event.addListener(map, 'idle', fetch_data);
     }
 
+    function map_set_center(position) {
+      var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      $('#map_info').hide();
+      map.setCenter(point);
+      map.setZoom(14);
+    }
+
     function exists_in_markers(id) {
       for(i in markers) {
         if (markers[i].id == id) return true 

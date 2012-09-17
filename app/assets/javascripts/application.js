@@ -24,13 +24,15 @@ _.templateSettings = {
 $(document).ready(function() {
 
 	$('.sidebar-nav .nav-list a').on('click', function(event) {
-		event.preventDefault();
+		if (map) {
+			event.preventDefault();
 
-		$(this).parents('.nav-list').find('li').removeClass('active');
-		$(this).parents('.nav-list li').addClass('active');
+			$(this).parents('.nav-list').find('li').removeClass('active');
+			$(this).parents('.nav-list li').addClass('active');
 
-		var type = ($(this).data('type'));
-		map_change_type(type);
+			var type = ($(this).data('type'));
+			map_change_type(type);
+		}
 	}).popover({ 'placement': 'right', 'trigger': 'hover' });
 
 	$('#search_btn').on('click', function(){

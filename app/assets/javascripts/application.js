@@ -22,6 +22,17 @@ _.templateSettings = {
 };
 
 $(document).ready(function() {
+
+	$('.sidebar-nav .nav-list a').on('click', function(event) {
+		event.preventDefault();
+
+		$(this).parents('.nav-list').find('li').removeClass('active');
+		$(this).parents('.nav-list li').addClass('active');
+
+		var type = ($(this).data('type'));
+		map_change_type(type);
+	});
+
 	$('#search_btn').on('click', function(){
 		var point = cities[$('#search_city').val()];
 		if (point) {
@@ -30,6 +41,7 @@ $(document).ready(function() {
 			map.setZoom(14);
 		}
 	});
+
 	$('#search_city').on('change', function(){
 		
 	});

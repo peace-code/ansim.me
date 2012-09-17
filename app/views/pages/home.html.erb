@@ -21,12 +21,18 @@
   	var map;
   	var markers = [];
     var cities = {};
+    var subcities = {};
 
     var MAP_TYPES = ['antibiotics', 'injections'];
     var current_map_type = '<%= @type %>' || MAP_TYPES[0];
 
     <% City.cities.each do |city| %>
-      cities["<%= city.city %>"] = new google.maps.LatLng(<%= city.coordinates[1] %>, <%= city.coordinates[0] %>);
+      cities["<%= city.city %>"] = {};
+      cities["<%= city.city %>"]['coordinates'] = new google.maps.LatLng(<%= city.coordinates[1] %>, <%= city.coordinates[0] %>);
+      cities["<%= city.city %>"]['subcities'] = {};
+      <% city.subcities.each do |subcity| %>
+        cities["<%= city.city %>"]['subcities']['<%= subcity.subcity %>'] = new google.maps.LatLng(<%= subcity.coordinates[1] %>, <%= subcity.coordinates[0] %>);
+      <% end %>
     <% end %>
 
     function initialize_map() {

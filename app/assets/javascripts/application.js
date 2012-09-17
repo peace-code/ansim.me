@@ -35,8 +35,19 @@ $(document).ready(function() {
 		}
 	}).popover({ 'placement': 'right', 'trigger': 'hover' });
 
-	$('#search_btn').on('click', function(){
-		var point = cities[$('#search_city').val()];
+	$('#search_city').on('change', function(){
+		var city = $('#search_city').val();
+		var subcities = cities[city]['subcities'];
+
+		var $search_subcity = $('#search_subcity');
+		$search_subcity.html("<option>시/군/구</option>");
+		for(subcity in subcities) {
+			$search_subcity.append("<option>"+subcity+"</option>");	
+		}
+	});
+
+	$('#search_subcity').on('change', function(){
+		var point = cities[$('#search_city').val()]['subcities'][$('#search_subcity').val()];
 		if (point) {
 			$('#map_info').hide();
 			map.setCenter(point);
@@ -44,10 +55,4 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#search_city').on('change', function(){
-		
-	});
-	$('#search_subcity').on('change', function(){
-		
-	});
 });

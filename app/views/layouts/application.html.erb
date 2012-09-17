@@ -62,11 +62,10 @@
                 <ul class="nav nav-list">
                   <li class="nav-header">지역 선택</li>
                   <li><%= select_tag(:search_city, options_for_select(['시/도'] + City.all.distinct(:city))) %></li>
-                  <!--
-                  <li><%= select_tag(:search_sub_city, options_for_select(['시/군/구'] + City.all.distinct(:city))) %></li>
-                  <li><input type='text' placeholder='병원'></li>
-                -->
-                  <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li>
+                  <li><%= select_tag(:search_subcity, options_for_select(['시/군/구'])) %></li>
+                  <!-- <li><input type='text' placeholder='병원'></li> -->
+                  <!-- <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li> -->
+                  <li><input id='current_pos_btn' type='button' value='현재 위치' class='btn btn-primary'></li>
                 </ul>
               </div><!--/.well -->
 

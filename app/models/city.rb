@@ -17,4 +17,8 @@ class City
   def self.cities
   	self.where(subcity: nil)
   end
+
+  def subcities
+    City.where(city: self.city, subcity: { '$ne' => nil } )
+  end
 end

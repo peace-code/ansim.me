@@ -31,7 +31,7 @@ $(document).ready(function() {
 
 		var type = ($(this).data('type'));
 		map_change_type(type);
-	});
+	}).popover({ 'placement': 'right', 'trigger': 'hover' });
 
 	$('#search_btn').on('click', function(){
 		var point = cities[$('#search_city').val()];

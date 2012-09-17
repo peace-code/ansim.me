@@ -23,7 +23,7 @@
     var cities = {};
 
     var MAP_TYPES = ['antibiotics', 'injections'];
-    var current_map_type = '<%= @type %>';
+    var current_map_type = '<%= @type %>' || MAP_TYPES[0];
 
     <% City.cities.each do |city| %>
       cities["<%= city.city %>"] = new google.maps.LatLng(<%= city.coordinates[1] %>, <%= city.coordinates[0] %>);

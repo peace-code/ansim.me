@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
   def home
-  	@type = params[:type]
+  	@type = params[:type] || 'antibiotics'
   end
 end

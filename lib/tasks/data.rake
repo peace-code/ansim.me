@@ -14,7 +14,7 @@ namespace :data do
 			code, name, category, phone, zipcode, address, antibiotics, injections = row
 			Hospital.create( code: code, name: name, category: category, phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics)
 		end
-	end	
+	end
 
 	desc "update data"
 	task :update => :environment do
@@ -57,3 +57,6 @@ namespace :data do
 		end
 	end
 end
+
+# should update data
+# { "_id" : ObjectId("5050bcb043cd2af0130037f7"), "address" : "경기도 군포시 오금로 43", "antibiotics" : "4", "category" : "의원", "code" : "41319320", "coordinates" : [ 126.931953, 37.353920 ], "created_at" : ISODate("2012-09-12T16:47:44.021Z"), "injections" : "2", "name" : "미소이비인후과의원", "phone" : "031-398-8275", "updated_at" : ISODate("2012-09-17T07:36:54.726Z"), "zipcode" : "(435050)" }

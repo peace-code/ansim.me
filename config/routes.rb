@@ -4,6 +4,7 @@ Goodclinic::Application.routes.draw do
   get "pages/home", as: 'map'
   get "pages/comments"
   get "pages/about"
+  get "pages/other"
 
   root :to => 'pages#home'
 end

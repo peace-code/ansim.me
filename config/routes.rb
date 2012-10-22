@@ -5,6 +5,7 @@ Goodclinic::Application.routes.draw do
 
   get "pages/comments"
   get "pages/about"
+  get "pages/other"
 
   root :to => 'maps#hospitals'
 end

@@ -42,7 +42,7 @@ $(document).ready(function() {
 		var $search_subcity = $('#search_subcity');
 		$search_subcity.html("<option>시/군/구</option>");
 		for(subcity in subcities) {
-			$search_subcity.append("<option>"+subcity+"</option>");	
+			$search_subcity.append("<option>"+subcity+"</option>");
 		}
 	});
 

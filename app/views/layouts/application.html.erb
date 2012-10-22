@@ -4,13 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "안심병원" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "안심이" %></title>
     <%= csrf_meta_tags %>
-
-    <!-- Javascripts
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <%= javascript_include_tag "application" %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -30,12 +25,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">안심병원</a>
+          <a class="brand" href="/">안심이</a>
           <div class="container nav-collapse">
             <ul class="nav">
               <li><%= link_to "소개", "/pages/about" %></li>
-              <li><%= link_to "지도로 보기", root_path %></li>
-              <li><%= link_to "목록으로 보기", hospitals_path %></li>
+              <li><%= link_to "안심병원", hospital_map_path %></li>
               <li><%= link_to "문의하기", "/pages/comments" %></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -45,39 +39,7 @@
 
     <div class="container-fluid">
       <div class="content">
-        <div class="row-fluid">
-            <div class="span3">
-              <div class="well sidebar-nav">
-                <h3>지도로 보기</h3>
-                <ul class="nav nav-list" style='margin-bottom:2em;'>
-                  <li class="nav-header">보고 싶은 데이터를 클릭하세요</li>
-                  <li class='<%= 'active' if @type == 'antibiotics' %>'>
-                    <%= link_to '항생제처방률', map_path(type: 'antibiotics'), data: { type:'antibiotics', title: '항생제처방률이란?', content: "감기와 같은 질병은 바이러스가 원인인 경우가 많아 항생제를 복용해도 치료가 빨라지거나 증상이 급격히 좋아지지 않습니다. 대부분 감기에는 항생제가 불필요하므로 항생제를 꼭 필요한 경우에만 처방하는 의료기관이 좋은 의료기관입니다." } %>
-                  </li>
-                  <li class='<%= 'active' if @type == 'injections' %>'>
-                    <%= link_to '주사제처방률', map_path(type: 'injections'), data: { type:'injections', title: '주사제처방률이란?', content:"주사제는 알약을 삼킬 수 없거나, 응급환자처럼 치료효과가 빨리 나타나야 하는 경우 등에만 사용하는 의약품입니다. 환자가 알약을 먹는 데 문제가 없다면 주사제가 먹는 약보다 유리한 점은 없습니다. 주사는 쇼크 등의 부작용이 발생할 가능성이 알약에 비해 높습니다. 따라서 주사제는 꼭 필요한 환자에게 신중하게 사용하는 의료기관이 좋은 의료기관입니다." } %>
-                  </li>
-                  <li><a href='#'>진료결과(암수술사망률) - 준비중</a></li>
-                </ul>
-
-                <ul class="nav nav-list">
-                  <li class="nav-header">지역 선택</li>
-                  <li><%= select_tag(:search_city, options_for_select(['시/도'] + City.all.distinct(:city))) %></li>
-                  <li><%= select_tag(:search_subcity, options_for_select(['시/군/구'])) %></li>
-                  <!-- <li><input type='text' placeholder='병원'></li> -->
-                  <!-- <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li> -->
-                  <li class='nav-header'>현재 위치 선택</li>
-                  <li><input id='current_pos_btn' type='button' value='현재 위치' class='btn btn-primary'></li>
-                </ul>
-              </div><!--/.well -->
-
-              <p>2012년 상반기 종합결과이며 현재 개발중입니다. 병원을 선택하는 기준으로 참고하지 마세요.</p>
-              <p>더 자세한 정보는 <a href='http://www.hira.or.kr/rec_infopub.hospinfo.do?method=listDiagEvl&pgmid=HIRAA030004000000' target='_new'>건강보험심사평가원</a>에서 볼 수 있습니다.</p>
-            </div><!--/span-->
-           <div class="span9">
-              <%= yield %>
-            </div>
-        </div><!--/row-->
+        <%= yield %>
       </div><!--/content-->
 
       <footer>
@@ -85,6 +47,12 @@
       </footer>
 
     </div> <!-- /container -->
+
+    <!-- Javascripts
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%= javascript_include_tag "application" %>
+    <%= yield :script_in_page %>
 
     <script type="text/javascript">
 

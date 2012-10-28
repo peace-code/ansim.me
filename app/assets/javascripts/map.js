@@ -6,6 +6,7 @@ var Map = function(options) {
 
     this.map = null;
     this.canvas = options['canvas'][0];
+    this.center = options['center'] || new google.maps.LatLng(37.49227,126.89779);
 
     this.categories = options['categories'];
     this.current_category = this.categories[0];
@@ -19,7 +20,7 @@ var Map = function(options) {
     this.initialize = function() {
         var myOptions = {
             zoom: 15,
-            center: new google.maps.LatLng(37.49227,126.89779),
+            center: root.center,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
@@ -34,43 +35,43 @@ var Map = function(options) {
         var new_makers_count = 0;
 
             for(var i=0; i < data.length; i++) {
-            var id = data[i]._id;
-            if (root.exists_in_markers(id)) {
-                // skip
-            } else {
+                var id = data[i]._id;
+                if (root.exists_in_markers(id)) {
+                    // skip
+                } else {
+                    for(j in root.categories) {
+                        var category = root.categories[j];
+                        var value = data[i][category];
+                        var coordinates = data[i].coordinates;
+                        if (value != '-' && coordinates != null) {
+                            var pinImage = root.build_marker_image(value);
+                            var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+                                    new google.maps.Size(40, 37),
+                                    new google.maps.Point(0, 0),
+                                    new google.maps.Point(12, 35));
 
-                for(j in root.categories) {
-                    var category = root.categories[j];
-                    var value = data[i][category];
-                    if (value != '-') {
-                        var pinImage = root.build_marker_image(value);
-                        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-                                new google.maps.Size(40, 37),
-                                new google.maps.Point(0, 0),
-                                new google.maps.Point(12, 35));
+                            marker = new google.maps.Marker({
+                                map             : root.map,
+                                position    : new google.maps.LatLng(coordinates[1], coordinates[0]),
+                                icon            : pinImage,
+                                shadow        : pinShadow,
+                                title         : id,
+                                category    : category
+                            });
 
-                        marker = new google.maps.Marker({
-                            map             : root.map,
-                            position    : new google.maps.LatLng(data[i].coordinates[1], data[i].coordinates[0]),
-                            icon            : pinImage,
-                            shadow        : pinShadow,
-                            title         : id,
-                            category    : category
-                        });
+                            if (category != root.current_category) {
+                                marker.setVisible(false);
+                            }
 
-                        if (category != root.current_category) {
-                            marker.setVisible(false);
+                            google.maps.event.addListener(marker, 'click', function() {
+                                root.show_info_view(this.title);
+                            });
+
+                            root.markers.push({ id: id, marker: marker });
+                            new_makers_count++;
                         }
-
-                        google.maps.event.addListener(marker, 'click', function() {
-                            root.show_info_view(this.title);
-                        });
-
-                        root.markers.push({ id: id, marker: marker });
-                        new_makers_count++;
-                    }
-                } // for
-            } // else
+                    } // for
+                } // else
             } // for
         console.log("load " + data.length + " data & new "+ new_makers_count +" markers");
     }

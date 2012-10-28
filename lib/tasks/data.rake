@@ -2,23 +2,27 @@ require 'csv'
 require 'open-uri'
 require 'json'
 
+require Rails.root.join('app','helpers','geocode_helper.rb')
+include GeocodeHelper
+
 namespace :data do
 
-	DATAFILE = "#{Rails.root.to_s}/db/hos-1-u8.csv"
+	HOSPITALS_FILE = Rails.root.join('db', 'hos-1-u8.csv')
+	AEDS_FILE = Rails.root.join('db', 'aeds.gangnam.csv')
 
-	desc "load data"
-	task :load_file => :environment do
+	desc "load hospital data"
+	task :load_hospitals => :environment do
 		Hospital.delete_all
-		CSV.parse(File.read(DATAFILE)) do |row|
+		CSV.parse(File.read(HOSPITALS_FILE)) do |row|
 			p row
 			code, name, category, phone, zipcode, address, antibiotics, injections = row
 			Hospital.create( code: code, name: name, category: category, phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics)
 		end
 	end
 
-	desc "update data"
-	task :update => :environment do
-		CSV.parse(File.read(DATAFILE)) do |row|
+	desc "update hospital data"
+	task :update_hospitals => :environment do
+		CSV.parse(File.read(HOSPITALS_FILE)) do |row|
 			code, name, category, phone, zipcode, address, antibiotics, injections = row
 			hospital = Hospital.where(code: code).first
 			if hospital
@@ -31,8 +35,8 @@ namespace :data do
 		end
 	end
 
-	desc "geocode"
-	task :geocode => :environment do
+	desc "geocode hospital data"
+	task :geocode_hospitals => :environment do
 		hospitals = Hospital.where(coordinates: nil)
 		hospitals.each do |hospital|
 			p hospital.address
@@ -44,6 +48,24 @@ namespace :data do
 				hospital.coordinates = [item['lng'], item['lat']]
 				hospital.save()
 			end
+		end
+	end
+
+	# "신사동","신사동 548-1","주민센터 민원실 내","3443-6560","1"
+	desc "load aeds"
+	task :load_aeds => :environment do
+
+		type = :aed
+
+		Place.type(type).delete
+
+		CSV.parse(File.read(AEDS_FILE)) do |row|
+			puts row
+			info = {}
+			name, address, info[:address_desc], info[:phone] = row
+			coordinates = geocode(address)
+
+			Place.create!( type: type, name: name, address: address, coordinates: coordinates, info: info )
 		end
 	end
 

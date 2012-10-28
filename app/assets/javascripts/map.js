@@ -1,136 +1,140 @@
 document.write('<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>');
 
-var Map = function() {
+var Map = function(options) {
 
-  this.canvas = null;
+    var root = this;
 
-  this.initialize = function(canvas) {
-    this.canvas = canvas;
-  }
-}
+    this.map = null;
+    this.canvas = options['canvas'][0];
 
-var markers = [];
-var map_info = $('#map_info');
+    this.categories = options['categories'];
+    this.current_category = this.categories[0];
+    this.data_url = options['data_url']
+    this.type = options['type'] || 'grade';
 
-var MAP_TYPES = ['antibiotics', 'injections'];
-var current_map_type = MAP_TYPES[0];
+    this.markers = [];
+    this.info_view = $('#map_info');
+    this.info_view_template = $('#map_info_template');
 
-function initialize_map() {
-  var myOptions = {
-    zoom: 15,
-    center: new google.maps.LatLng(37.49227,126.89779),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
+    this.initialize = function() {
+        var myOptions = {
+            zoom: 15,
+            center: new google.maps.LatLng(37.49227,126.89779),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
 
-  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var map = root.map = new google.maps.Map(root.canvas, myOptions);
 
-  google.maps.event.addListener(map, 'mouseup', fetch_data);
-  google.maps.event.addListener(map, 'zoom_changed', fetch_data);
-  google.maps.event.addListener(map, 'idle', fetch_data);
-}
+        google.maps.event.addListener(map, 'mouseup', root.fetch_data);
+        google.maps.event.addListener(map, 'zoom_changed', root.fetch_data);
+        google.maps.event.addListener(map, 'idle', root.fetch_data);
+    }
 
-function map_set_center(position) {
-  var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-  map_info.hide();
-  map.setCenter(point);
-  map.setZoom(14);
-}
+    this.plcae_markers = function(data) {
+        var new_makers_count = 0;
 
-function exists_in_markers(id) {
-  for(i in markers) {
-    if (markers[i].id == id) return true
-  }
-  return false;
-}
+            for(var i=0; i < data.length; i++) {
+            var id = data[i]._id;
+            if (root.exists_in_markers(id)) {
+                // skip
+            } else {
 
-function show_hospital_overlay(id) {
-  var $info = map_info;
-  var $canvas = $('#map_canvas');
-  var url = '/hospitals/' + id;
+                for(j in root.categories) {
+                    var category = root.categories[j];
+                    var value = data[i][category];
+                    if (value != '-') {
+                        var pinImage = root.build_marker_image(value);
+                        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+                                new google.maps.Size(40, 37),
+                                new google.maps.Point(0, 0),
+                                new google.maps.Point(12, 35));
 
-  $.getJSON(url)
-      .success(function(data) {
-        var html = _.template($('#map_info_template').html(), data);
+                        marker = new google.maps.Marker({
+                            map             : root.map,
+                            position    : new google.maps.LatLng(data[i].coordinates[1], data[i].coordinates[0]),
+                            icon            : pinImage,
+                            shadow        : pinShadow,
+                            title         : id,
+                            category    : category
+                        });
 
-        console.log(id, data);
+                        if (category != root.current_category) {
+                            marker.setVisible(false);
+                        }
 
-        $info.html(html);
-        $info.width($canvas.width());
-        $info.offset($canvas.offset());
-        $info.show();
-      });
-}
+                        google.maps.event.addListener(marker, 'click', function() {
+                            root.show_info_view(this.title);
+                        });
 
-function map_change_type(type) {
-  current_map_type = type;
-  for(i in markers) {
-    var marker = markers[i].marker;
-    marker.setVisible(marker.type == current_map_type);
-  }
-}
+                        root.markers.push({ id: id, marker: marker });
+                        new_makers_count++;
+                    }
+                } // for
+            } // else
+            } // for
+        console.log("load " + data.length + " data & new "+ new_makers_count +" markers");
+    }
 
-function map_build_marker_image(grade) {
-  var pinColor = ['', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][grade];
-  return new google.maps.MarkerImage(
-            "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
-}
-
-function place_markers(data) {
-  var new_makers_count = 0;
-
-    for(var i=0; i < data.length; i++) {
-    var id = data[i]._id;
-    if (window.exists_in_markers(id)) {
-      // skip
-    } else {
-
-      for(j in MAP_TYPES) {
-        var type = MAP_TYPES[j];
-        var grade = data[i][type];
-        if (grade != '-') {
-          var pinImage = map_build_marker_image(grade);
-          var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-              new google.maps.Size(40, 37),
-              new google.maps.Point(0, 0),
-              new google.maps.Point(12, 35));
-
-          marker = new google.maps.Marker({
-            map:map,
-            position: new google.maps.LatLng(data[i].coordinates[1], data[i].coordinates[0]),
-            icon: pinImage,
-            shadow: pinShadow,
-            title: id,
-            type: type
-          });
-
-          if (type != current_map_type) {
-            marker.setVisible(false);
-          }
-
-          google.maps.event.addListener(marker, 'click', function() {
-            window.show_hospital_overlay(this.title);
-          });
-
-          markers.push({ id: id, marker: marker });
-          new_makers_count++;
+    this.exists_in_markers = function(id) {
+        for(i in root.markers) {
+            if (root.markers[i].id == id) return true
         }
-      } // for
-    } // else
-    } // for
-  console.log("load " + data.length + " data & new "+ new_makers_count +" markers");
-}
+        return false;
+    }
 
-function fetch_data() {
-        var url = '/hospitals.json';
+    this.build_marker_image = function(value) {
+        if (this.type == 'grade') {
+            var pinColor = ['', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][value];
+            return new google.maps.MarkerImage(
+                "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34)
+            );
+        }
+    }
+
+    this.change_category = function(category) {
+        root.current_category = category;
+        for(i in root.markers) {
+            var marker = root.markers[i].marker;
+            marker.setVisible(marker.category == root.current_category);
+        }
+    }
+
+    // these methods called by google map
+    this.show_info_view = function(id) {
+        $.getJSON([root.data_url, '/', id].join(''))
+            .success(function(data) {
+                var html = _.template(root.info_view_template.html(), data);
+
+                $(root.info_view).html(html);
+                $(root.info_view).width($(root.canvas).width());
+                $(root.info_view).offset($(root.canvas).offset());
+                $(root.info_view).show();
+            });
+    }
+
+    this.fetch_data = function() {
         var map = this;
-    var bounds = map.getBounds();
-        $jqXHR = $.getJSON(url, {
-                        north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
-                        south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat()
-                }).success(function(data) {
-                    place_markers(data);
-                });
-}
+        var bounds = map.getBounds();
+        $jqXHR = $.getJSON(root.data_url, {
+            north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
+            south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat()
+        }).success(function(data) {
+            root.plcae_markers(data);
+        });
+    }
+
+    this.set_center = function(position) {
+        if (position.coords != undefined) {
+            var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        } else {
+            var point = position;
+        }
+        root.info_view.hide();
+        root.map.setCenter(point);
+        root.map.setZoom(14);
+    }
+
+} // Map end

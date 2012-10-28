@@ -25,13 +25,10 @@ $(document).ready(function() {
 
 	$('.sidebar-nav .nav-list a').on('click', function(event) {
 		if (map) {
-			event.preventDefault();
-
 			$(this).parents('.nav-list').find('li').removeClass('active');
 			$(this).parents('.nav-list li').addClass('active');
-
-			var type = ($(this).data('type'));
-			map_change_type(type);
+			map.change_category(($(this).data('type')));
+			return false;
 		}
 	}).popover({ 'placement': 'right', 'trigger': 'hover' });
 
@@ -50,14 +47,13 @@ $(document).ready(function() {
 		var point = cities[$('#search_city').val()]['subcities'][$('#search_subcity').val()];
 		if (point) {
 			$('#map_info').hide();
-			map.setCenter(point);
-			map.setZoom(14);
+			map.set_center(point);
 		}
 	});
 
 	$('#current_pos_btn').on('click', function() {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(map_set_center);
+			navigator.geolocation.getCurrentPosition(map.set_center);
 		} else {
 			alert('현재 위치를 가져올 수 없습니다');
 		}

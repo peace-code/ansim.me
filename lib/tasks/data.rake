@@ -100,7 +100,7 @@ namespace :data do
 				Place.create!(
 					type: type,
 					category: category,
-					category: category_desc,
+					category_desc: category_desc,
 					name: name,
 					address: address,
 					coordinates: coordinates,

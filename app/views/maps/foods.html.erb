@@ -1,5 +1,5 @@
 <%
-  categories = Place.type(:food).distinct('info.category_desc')
+  categories = Place.type(:food).distinct(:category_desc)
 %>
 
 <div class="row-fluid">
@@ -8,9 +8,9 @@
       <h3>안심먹거리 <small>지도로 보기</small></h3>
       <ul class="nav nav-list" style='margin-bottom:2em;'>
         <li class="nav-header">보고 싶은 데이터를 클릭하세요</li>
-        <% categories.each do |category| %>
-          <li class='<%= 'active' if @type == 'antibiotics' %>'>
-            <%= link_to category, places_path(type: :aed), data: { type:'1' } %>
+        <% categories.each_with_index do |category, i| %>
+          <li>
+            <%= link_to category, '', data: { type: i } %>
           </li>
         <% end %>
       </ul>
@@ -35,7 +35,7 @@
   <script id="map_info_template" type="text/x-jquery-tmpl">
     <div class='inner'>
       <h3>{{name}}
-        <small class='icon-bookmark'> {{info.category_desc}}</small>
+        <small class='icon-bookmark'> {{category_desc}}</small>
         </h3>
       <p>
         <span class='address' style='margin-right:1em'><i class='icon-map-marker'></i> {{address}}</span>

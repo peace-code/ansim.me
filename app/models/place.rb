@@ -4,6 +4,8 @@ class Place
   include Geocoder::Model::Mongoid
 
   field :type
+  field :category
+  field :category_desc
   field :name
   field :description
   field :info, type: Hash
@@ -11,6 +13,7 @@ class Place
   field :zipcode
   field :address
   field :coordinates, type: Array
+  field :phone
 
   geocoded_by :address
   # after_validation :geocode

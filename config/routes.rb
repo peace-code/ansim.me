@@ -5,6 +5,7 @@ Goodclinic::Application.routes.draw do
 
   get "maps/hospitals", as: 'hospital_map'
   get "maps/aeds", as: 'aed_map'
+  get "maps/foods", as: 'food_map'
 
   get "pages/comments"
   get "pages/about"

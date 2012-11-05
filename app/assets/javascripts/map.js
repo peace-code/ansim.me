@@ -10,7 +10,10 @@ var Map = function(options) {
 
     this.categories = options['categories'];
     this.current_category = this.categories[0];
-    this.data_url = options['data_url']
+    this.data_url = options['data_url'];
+    this.data_type = options['data_type'];
+    this.pins = options['pins'];
+
     this.type = options['type'] || 'grade';
 
     this.markers = [];
@@ -45,17 +48,12 @@ var Map = function(options) {
                         var coordinates = data[i].coordinates;
                         if (value != '-' && coordinates != null) {
                             var pinImage = root.build_marker_image(value);
-                            var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-                                    new google.maps.Size(40, 37),
-                                    new google.maps.Point(0, 0),
-                                    new google.maps.Point(12, 35));
 
                             marker = new google.maps.Marker({
-                                map             : root.map,
+                                map         : root.map,
                                 position    : new google.maps.LatLng(coordinates[1], coordinates[0]),
-                                icon            : pinImage,
-                                shadow        : pinShadow,
-                                title         : id,
+                                icon        : pinImage,
+                                title       : id,
                                 category    : category
                             });
 
@@ -84,14 +82,26 @@ var Map = function(options) {
     }
 
     this.build_marker_image = function(value) {
-        if (this.type == 'grade') {
-            var pinColor = ['', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][value];
+        if (this.pins) {
+            console.log('custom pin mode');
+            console.log(value);
+            var pin_image = this.pins[value];
             return new google.maps.MarkerImage(
-                "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-                new google.maps.Size(21, 34),
+                pin_image,
+                null,
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34)
             );
+        } else {
+            if (this.type == 'grade') {
+                var pinColor = ['', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][value];
+                return new google.maps.MarkerImage(
+                    "http://chart.apis.google.com/chart?chst=d_map_pin_letter_withshadow&chld="+value+"|" + pinColor,
+                    null,
+                    new google.maps.Point(0,0),
+                    new google.maps.Point(10, 34)
+                );
+            }
         }
     }
 
@@ -107,6 +117,7 @@ var Map = function(options) {
     this.show_info_view = function(id) {
         $.getJSON([root.data_url, '/', id].join(''))
             .success(function(data) {
+                console.log(data);
                 var html = _.template(root.info_view_template.html(), data);
 
                 $(root.info_view).html(html);
@@ -120,6 +131,7 @@ var Map = function(options) {
         var map = this;
         var bounds = map.getBounds();
         $jqXHR = $.getJSON(root.data_url, {
+            type: root.data_type,
             north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
             south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat()
         }).success(function(data) {

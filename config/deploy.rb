@@ -22,6 +22,11 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/uploads"
   end
 
+  task :clean_configs do
+    run "rm -rf #{shared_path}/config"
+    run "mkdir -p #{shared_path}/config"
+  end
+
   desc "Symlink shared configs and folders on each release."
   task :create_symlink_shared do
     run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"

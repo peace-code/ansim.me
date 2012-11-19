@@ -3,7 +3,7 @@ require 'bundler/capistrano'
 set :application, "ansim.me"
 set :domain, "#{application}"
 
-set :repository,  "ssh://git@github.com:peace-code/#{application}.git"
+set :repository,  "https://github.com/peace-code/#{application}.git"
 set :scm, :git
 set :branch, 'master'
 set :user, 'deployer'

@@ -16,3 +16,8 @@
 
 # Ignore .DS_Store
 .DS_Store
+
+# Ignore configurations
+/config/apikey.yml
+/config/mongoid.yml
+

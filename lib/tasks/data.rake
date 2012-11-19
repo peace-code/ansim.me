@@ -7,6 +7,7 @@ include GeocodeHelper
 
 namespace :data do
 
+	APIKEY = YAML.load_file(Rails.root.join('config','apikey.yml'))['daum']
 	HOSPITALS_FILE = Rails.root.join('db', 'hos-1-u8.csv')
 	AEDS_FILE = Rails.root.join('db', 'aeds.gangnam.csv')
 	FOODS_FILE = Rails.root.join('db', 'ansimfood.csv')
@@ -42,7 +43,7 @@ namespace :data do
 		hospitals = Hospital.where(coordinates: nil)
 		hospitals.each do |hospital|
 			p hospital.address
-			url = "http://apis.daum.net/local/geo/addr2coord?apikey=d6c46bdc42bfcbadad8458e2699b991423207468&output=json&q=#{hospital.address}"
+			url = "http://apis.daum.net/local/geo/addr2coord?apikey=#{APIKEY}&output=json&q=#{hospital.address}"
 			result = JSON.parse(open(URI.encode(url)).read)
 			items = result['channel']['item']
 			unless items.blank?

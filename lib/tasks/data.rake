@@ -19,6 +19,7 @@ namespace :data do
 			p row
 			code, name, category, phone, zipcode, address, antibiotics, injections = row
 			Hospital.create( code: code, name: name, category: category, phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics)
+			sleep 0.42
 		end
 	end
 
@@ -76,6 +77,7 @@ namespace :data do
 				phone: phone,
 				info: info,
 			)
+			sleep 0.42
 		end
 	end
 
@@ -108,6 +110,7 @@ namespace :data do
 					phone: phone,
 					info: info
 				)
+				sleep 0.42
 			rescue
 				p "ERROR"
 			end

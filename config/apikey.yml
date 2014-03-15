@@ -1,0 +1,2 @@
+daum: ENV['DAUM_APIKEY']
+google : ENV['GOOGLE_APIKEY']

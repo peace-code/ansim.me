@@ -120,7 +120,9 @@ namespace :data do
 		CSV.parse(File.read("#{Rails.root.to_s}/db/city.txt"), col_sep:"\t") do |row|
 			p row
 			city, subcity = row
-			City.create( city: city, subcity: subcity, address: "#{city} #{subcity}")
+			c = City.create( city: city, subcity: subcity, address: "#{city} #{subcity}")
+			p c.coordinates
+			sleep 0.42
 		end
 	end
 end

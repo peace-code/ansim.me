@@ -16,7 +16,7 @@ class Place
   field :phone
 
   geocoded_by :address
-  # after_validation :geocode
+  after_validation :geocode
 
   index({ coordinates: "2d" })
 

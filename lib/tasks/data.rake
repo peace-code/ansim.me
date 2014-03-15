@@ -75,7 +75,7 @@ namespace :data do
 				address: address,
 				coordinates: coordinates,
 				phone: phone,
-				info: info,
+				info: info
 			)
 			sleep 0.42
 		end
@@ -98,7 +98,7 @@ namespace :data do
 				info = {}
 
 				dummy, category, category_desc, dummy, name, dummy, dummy, address, phone = row
-				coordinates = geocode(address)
+				# coordinates = geocode(address)
 
 				Place.create!(
 					type: type,
@@ -106,7 +106,7 @@ namespace :data do
 					category_desc: category_desc,
 					name: name,
 					address: address,
-					coordinates: coordinates,
+					# coordinates: coordinates,
 					phone: phone,
 					info: info
 				)

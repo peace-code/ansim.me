@@ -69,7 +69,7 @@ test:
 production:
   sessions:
     default:
-      uri: ENV['MONGOLAB']
+      uri: <%= ENV['MONGOLAB'] %>
       # database: goodclinic_production
       # hosts:
       #   - localhost:27017

@@ -132,15 +132,16 @@ namespace :data do
 	end
 
 	desc "Get AED Places from web pages"
-	task :get_aeds => :environment do
+	task :get_aeds, [:begin_n, :thru_n] => :environment do | t, args |
+		args.with_defaults(:begin_n => "1", :thru_n => "1277") # [..) 1277
 		type = :aed
 		Place.type(type).delete
-		begin_n = 1; thru_n = 1277# [..) 1277
+		begin_n = args.begin_n.to_i; thru_n = args.thru_n.to_i
 		n = begin_n
 		begin
 			cnt = 0
 			puts "EGEN,FETCH,#{n}"
-  		aed_places = DatabaseHelper::egen_get_list n
+  		aed_places = egen_get_list n
       unless aed_places.nil? 
         aed_places.each do |el|
           aed = el['href']
@@ -166,6 +167,7 @@ namespace :data do
               next
             end
           end
+          sleep 0.42
         end #aed_places
       end
       n = n + 1

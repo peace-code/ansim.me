@@ -135,7 +135,7 @@ namespace :data do
 	task :get_aeds => :environment do
 		type = :aed
 		Place.type(type).delete
-		begin_n = 1275; thru_n = 1277# [..) 1277
+		begin_n = 1; thru_n = 1277# [..) 1277
 		n = begin_n
 		begin
 			cnt = 0
@@ -151,7 +151,7 @@ namespace :data do
             sn = aed[9]
             begin
               info = {}
-              info[:category], address, phone, info[:address_desc], nop, info[:create_at], info[:model] = egen_print_info sn
+              info[:category], address, phone, info[:address_desc], nop, info[:created_at], info[:model] = egen_print_info sn
               info[:sn] = sn
               print type, ",", name, ",", address[13..-1], ",", phone, ",", info, "\n" if Rake.application.options.trace == true
               Place.create!(

@@ -140,7 +140,7 @@ namespace :data do
 		begin
 			cnt = 0
 			puts "EGEN,FETCH,#{n}"
-  		aed_places = DatabaseHelper::get_list n
+  		aed_places = DatabaseHelper::egen_get_list n
       unless aed_places.nil? 
         aed_places.each do |el|
           aed = el['href']
@@ -151,7 +151,7 @@ namespace :data do
             sn = aed[9]
             begin
               info = {}
-              info[:category], address, phone, info[:address_desc], nop, info[:create_at], info[:model] = print_info sn
+              info[:category], address, phone, info[:address_desc], nop, info[:create_at], info[:model] = egen_print_info sn
               info[:sn] = sn
               print type, ",", name, ",", address[13..-1], ",", phone, ",", info, "\n" if Rake.application.options.trace == true
               Place.create!(

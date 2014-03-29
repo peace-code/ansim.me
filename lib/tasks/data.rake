@@ -3,7 +3,9 @@ require 'open-uri'
 require 'json'
 
 require Rails.root.join('app','helpers','geocode_helper.rb')
+require Rails.root.join('app','helpers','database_helper.rb')
 include GeocodeHelper
+include DatabaseHelper
 
 namespace :data do
 
@@ -19,6 +21,7 @@ namespace :data do
 			p row
 			code, name, category, phone, zipcode, address, antibiotics, injections = row
 			Hospital.create( code: code, name: name, category: category, phone: phone, zipcode: zipcode, address: address, antibiotics: antibiotics)
+			sleep 0.42
 		end
 	end
 
@@ -66,16 +69,17 @@ namespace :data do
 			puts row
 			info = {}
 			name, address, info[:address_desc], phone = row
-			coordinates = geocode(address)
+			# coordinates = geocode(address)
 
 			Place.create!(
 				type: type,
 				name: name,
 				address: address,
-				coordinates: coordinates,
+				# coordinates: coordinates,
 				phone: phone,
-				info: info,
+				info: info
 			)
+			sleep 0.42
 		end
 	end
 
@@ -96,7 +100,7 @@ namespace :data do
 				info = {}
 
 				dummy, category, category_desc, dummy, name, dummy, dummy, address, phone = row
-				coordinates = geocode(address)
+				# coordinates = geocode(address)
 
 				Place.create!(
 					type: type,
@@ -104,10 +108,11 @@ namespace :data do
 					category_desc: category_desc,
 					name: name,
 					address: address,
-					coordinates: coordinates,
+					# coordinates: coordinates,
 					phone: phone,
 					info: info
 				)
+				sleep 0.42
 			rescue
 				p "ERROR"
 			end
@@ -120,7 +125,54 @@ namespace :data do
 		CSV.parse(File.read("#{Rails.root.to_s}/db/city.txt"), col_sep:"\t") do |row|
 			p row
 			city, subcity = row
-			City.create( city: city, subcity: subcity, address: "#{city} #{subcity}")
+			c = City.create( city: city, subcity: subcity, address: "#{city} #{subcity}")
+			p c.coordinates
+			sleep 0.42
 		end
+	end
+
+	desc "Get AED Places from web pages"
+	task :get_aeds, [:begin_n, :thru_n] => :environment do | t, args |
+		args.with_defaults(:begin_n => "1", :thru_n => "1277") # [..) 1277
+		type = :aed
+		Place.type(type).delete
+		begin_n = args.begin_n.to_i; thru_n = args.thru_n.to_i
+		n = begin_n
+		begin
+			cnt = 0
+			puts "EGEN,FETCH,#{n}"
+  		aed_places = egen_get_list n
+      unless aed_places.nil? 
+        aed_places.each do |el|
+          aed = el['href']
+          unless aed.empty?
+            cnt = cnt + 1
+            aed = aed.split("'")
+            name = aed[1].gsub(/,/,'_')
+            sn = aed[9]
+            begin
+              info = {}
+              info[:category], address, phone, info[:address_desc], nop, info[:created_at], info[:model] = egen_print_info sn
+              info[:sn] = sn
+              print type, ",", name, ",", address[13..-1], ",", phone, ",", info, "\n" if Rake.application.options.trace == true
+              Place.create!(
+								type: type,
+								name: name,
+								address: address,
+								phone: phone,
+								info: info
+							)
+            rescue OpenURI::HTTPError
+              puts "ERROR,#{n},#{cnt},NOT_FOUND,-"
+              next
+            end
+          end
+          sleep 0.42
+        end #aed_places
+      end
+      n = n + 1
+      sleep 0.42
+		end while 0 < cnt && n < thru_n
+		puts "EGEN,#{n},END"
 	end
 end

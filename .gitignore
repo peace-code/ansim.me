@@ -18,6 +18,6 @@
 .DS_Store
 
 # Ignore configurations
-/config/apikey.yml
-/config/mongoid.yml
+#/config/apikey.yml #heroku config set DAUM_APIKEY=.... GOOGLE_APIKEY=....
+#/config/mongoid.yml #heroku config set MONGOLAB=....
 

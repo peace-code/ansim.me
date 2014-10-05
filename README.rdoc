@@ -1,28 +1,5 @@
-== README
+== 안심이 ansim.me
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+안심병원은 시민에게 안전 정보를 제공하는 <커뮤니티 맵핑 플랫폼 제작 프로젝트>입니다.
+공공데이터캠프에서의 아이디어로부터 시작해 현재 전국 병원의 항생제 처방 등급, 안심 먹거리, 심장충격기 위치를 제공합니다.
+올해 안에 누구나 쉽게, 데이터를 지도에 표시하고, 함께 고치거나 추가할 수 있고, 웹과 모바일을 모두 지원하는 오픈소스 플랫폼으로 공개됩니다.

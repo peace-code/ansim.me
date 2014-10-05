@@ -1,16 +1,49 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
-// about supported directives.
-//
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require underscore
+//= require bootstrap
+
+_.templateSettings = {
+  interpolate : /\{\{(.+?)\}\}/g
+};
+
+$(document).ready(function() {
+
+  $('.sidebar-nav .nav-list a').on('click', function(event) {
+    if (map) {
+      $(this).parents('.nav-list').find('li').removeClass('active');
+      $(this).parents('.nav-list li').addClass('active');
+      map.change_category(($(this).data('type')));
+      return false;
+    }
+  }).popover({ 'placement': 'right', 'trigger': 'hover' });
+
+  $('#search_city').on('change', function(){
+    var city = $('#search_city').val();
+    var subcities = cities[city]['subcities'];
+
+    var $search_subcity = $('#search_subcity');
+    $search_subcity.html("<option>시/군/구</option>");
+    for(subcity in subcities) {
+      $search_subcity.append("<option>"+subcity+"</option>");
+    }
+  });
+
+  $('#search_subcity').on('change', function(){
+    var point = cities[$('#search_city').val()]['subcities'][$('#search_subcity').val()];
+    if (point) {
+      $('#map_info').hide();
+      map.set_center(point);
+    }
+  });
+
+  $('#current_pos_btn').on('click', function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(map.set_center);
+    } else {
+      alert('현재 위치를 가져올 수 없습니다');
+    }
+  });
+
+});

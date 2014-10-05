@@ -1,0 +1,67 @@
+<%
+  categories = Place.type(:food).distinct(:category_desc)
+%>
+
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+      <h3>안심먹거리 <small>지도로 보기</small></h3>
+      <ul class="nav nav-list" style='margin-bottom:2em;'>
+        <li class="nav-header">보고 싶은 데이터를 클릭하세요</li>
+        <% categories.each_with_index do |category, i| %>
+          <li>
+            <%= link_to category, '', data: { type: i } %>
+          </li>
+        <% end %>
+      </ul>
+
+      <ul class="nav nav-list">
+        <li class="nav-header">지역 선택</li>
+        <li>현재 서울시만 제공 가능합니다.</li>
+      </ul>
+    </div><!--/.well -->
+
+    <p>데이터 출처 : </p>
+  </div><!--/span-->
+   <div class="span9">
+    <section id='map_section'>
+      <div id='map_canvas' class='map_view'></div>
+      <div id='map_info'></div>
+    </section>
+    </div>
+</div><!--/row-->
+
+<%= content_for :script_in_page do %>
+  <script id="map_info_template" type="text/x-jquery-tmpl">
+    <div class='inner'>
+      <h3>{{name}}
+        <small class='icon-bookmark'> {{category_desc}}</small>
+        </h3>
+      <p>
+        <span class='address' style='margin-right:1em'><i class='icon-map-marker'></i> {{address}}</span>
+        <span class='phone'><i class='icon-user'></i> {{phone}}</span>
+      </p>
+    </div>
+  </script>
+  <script type='text/javascript'>
+    $(document).ready(function() {
+      window.map = new Map({
+        center: new google.maps.LatLng(37.506049, 127.034225),
+        canvas: $('#map_canvas'),
+        categories: ['category'],
+        data_url: '<%= places_path %>',
+        data_type: 'food',
+        type: 'point',
+        pins: [
+          '',
+          "http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=truck|8dc73f",
+          "http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=glyphish_piggybank|fff200",
+          "http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=floral|8dc73f",
+          "http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=wc-female|f26522",
+          "http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=glyphish_gift|fff200",
+        ],
+      });
+      map.initialize();
+    })
+  </script>
+<% end %>

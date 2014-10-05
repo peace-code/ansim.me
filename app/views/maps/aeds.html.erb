@@ -1,0 +1,54 @@
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+      <h3>심장충격기 <small>지도로 보기</small></h3>
+      <ul class="nav nav-list" style='margin-bottom:2em;'>
+        <li class="nav-header">보고 싶은 데이터를 클릭하세요</li>
+        <li class='<%= 'active' if @type == 'antibiotics' %>'>
+          <%= link_to '심장충격기', places_path(type: :aed), data: { type:'aed' } %>
+        </li>
+      </ul>
+
+      <ul class="nav nav-list">
+        <li class="nav-header">지역 선택</li>
+        <li>현재 강남구만 제공 가능합니다.</li>
+      </ul>
+    </div><!--/.well -->
+
+    <p>데이터 출처 : <%= link_to '강남구 보건소', 'http://health.gangnam.go.kr/open_content/', target: '_blank' %></p>
+    <p>데이터 추출 : <%= link_to '@amoebaj', 'http://twitter.com/amoebaj', target: '_blank' %></p>
+  </div><!--/span-->
+   <div class="span9">
+    <section id='map_section'>
+      <div id='map_canvas' class='map_view' data-url='<%= places_path(type: :aed) %>'></div>
+      <div id='map_info'></div>
+    </section>
+    </div>
+</div><!--/row-->
+
+<%= content_for :script_in_page do %>
+  <script id="map_info_template" type="text/x-jquery-tmpl">
+    <div class='inner'>
+      <h3>{{name}}
+        <small class='icon-bookmark'> {{info.address_desc}}</small>
+        </h3>
+      <p>
+        <span class='address' style='margin-right:1em'><i class='icon-map-marker'></i> {{address}}</span>
+        <span class='phone'><i class='icon-user'></i> {{phone}}</span>
+      </p>
+    </div>
+  </script>
+  <script type='text/javascript'>
+    $(document).ready(function() {
+      window.map = new Map({
+        center: new google.maps.LatLng(37.506049, 127.034225),
+        canvas: $('#map_canvas'),
+        categories: ['pos'],
+        data_url: '<%= places_path %>',
+        data_type: 'aed',
+        type: 'point',
+      });
+      map.initialize();
+    })
+  </script>
+<% end %>

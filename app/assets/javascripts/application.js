@@ -3,6 +3,7 @@
 //= require turbolinks
 //= require underscore
 //= require bootstrap
+//= require map
 
 _.templateSettings = {
   interpolate : /\{\{(.+?)\}\}/g

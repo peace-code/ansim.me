@@ -21,6 +21,7 @@ gem 'turbolinks'
 
 # tools
 gem 'jbuilder', '~> 2.0'
+gem 'haml-rails'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # dev, test

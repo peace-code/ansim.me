@@ -1,5 +1,5 @@
 <div class="row-fluid">
-  <div class="span3">
+  <div class="col-sm-3">
     <div class="well sidebar-nav">
       <h3>심장충격기 <small>지도로 보기</small></h3>
       <ul class="nav nav-list" style='margin-bottom:2em;'>
@@ -15,10 +15,9 @@
       </ul>
     </div><!--/.well -->
 
-    <p>데이터 출처 : <%= link_to '강남구 보건소', 'http://health.gangnam.go.kr/open_content/', target: '_blank' %></p>
-    <p>데이터 추출 : <%= link_to '@amoebaj', 'http://twitter.com/amoebaj', target: '_blank' %></p>
+    <p>전국에 비치된 심장충격기 위치 데이터입니다.</p>
   </div><!--/span-->
-   <div class="span9">
+   <div class="col-sm-9">
     <section id='map_section'>
       <div id='map_canvas' class='map_view' data-url='<%= places_path(type: :aed) %>'></div>
       <div id='map_info'></div>

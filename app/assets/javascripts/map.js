@@ -36,9 +36,10 @@ var Map = function(options) {
 
     this.plcae_markers = function(data) {
         var new_makers_count = 0;
-
             for(var i=0; i < data.length; i++) {
                 var id = data[i]._id;
+                //  console.log(id);
+                //  console.log(data[i]);
                 if (root.exists_in_markers(id)) {
                     // skip
                 } else {
@@ -49,23 +50,24 @@ var Map = function(options) {
                         if (value != '-' && coordinates != null) {
                             var pinImage = root.build_marker_image(value);
 
-                            marker = new google.maps.Marker({
+                            var n_marker = new google.maps.Marker({
+                                mid         : data[i]._id,
                                 map         : root.map,
                                 position    : new google.maps.LatLng(coordinates[1], coordinates[0]),
                                 icon        : pinImage,
-                                title       : id,
+                                title       : data[i].name,
                                 category    : category
                             });
 
                             if (category != root.current_category) {
-                                marker.setVisible(false);
+                                n_marker.setVisible(false);
                             }
-
-                            google.maps.event.addListener(marker, 'click', function() {
-                                root.show_info_view(this.title);
+                            google.maps.event.addListener(n_marker, 'click', function() {
+                                var m_id = this.mid;
+                                root.show_info_view(m_id["$oid"]);
                             });
 
-                            root.markers.push({ id: id, marker: marker });
+                            root.markers.push({ id: id, marker: n_marker });
                             new_makers_count++;
                         }
                     } // for
@@ -117,12 +119,15 @@ var Map = function(options) {
     this.show_info_view = function(id) {
         $.getJSON([root.data_url, '/', id].join(''))
             .success(function(data) {
-                console.log(data);
-                var html = _.template(root.info_view_template.html(), data);
+                //  console.log(root.info_view_template.html());
+                var html_t = _.template(root.info_view_template.html());
+                var html = html_t(data);
 
                 $(root.info_view).html(html);
                 $(root.info_view).width($(root.canvas).width());
                 $(root.info_view).offset($(root.canvas).offset());
+                $(root.info_view).css('left', '15px');
+                $(root.info_view).css('top', '0px');
                 $(root.info_view).show();
             });
     }

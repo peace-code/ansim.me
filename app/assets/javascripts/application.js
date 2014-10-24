@@ -11,10 +11,10 @@ _.templateSettings = {
 
 $(document).ready(function() {
 
-  $('.sidebar-nav .nav-list a').on('click', function(event) {
+  $('.nav-sidebar a').on('click', function(event) {
     if (map) {
-      $(this).parents('.nav-list').find('li').removeClass('active');
-      $(this).parents('.nav-list li').addClass('active');
+      $(this).parents('.nav-sidebar').find('li').removeClass('active');
+      $(this).parents('.nav-sidebar li').addClass('active');
       map.change_category(($(this).data('type')));
       return false;
     }

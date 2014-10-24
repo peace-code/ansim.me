@@ -8,20 +8,44 @@
 
 `ruby 2.1.2, rails 4.`
 
+### vagrant!
+요구 사항: [vagrant](https://www.vagrantup.com) [virtualbox](https://www.virtualbox.org)
 
 ```
-# 어쨌든 루비 개발 환경을 구축합니다.
-rbenv install 2.1.2
+# clone this repo!
+cd ansim.me
+git checkout develop
+vagrant up
+# open http://localhost:3000
+# rock & roll!
+```
+
+### cloud9.
+```
+# go, get your account at c9.io.
+# add workspace.
+
+# install ruby
+rvm install 2.1.2
 gem install bundler
 
 cd ansim.me
+git checkout develop
+
+# 터미널 하나 더 열러서 실행. open new terminal window
+sudo mongod --smallfiles
+
+# 기존 터미널에서 실행. 몽고디비 덤프 내려받아 압축풀기
+cd ./tmp && curl -O https://dl.dropboxusercontent.com/u/55177834/ansim-2014-1.tar.gz | tar xvz
+tar zxvf ansim-201401.tar.gz
+
+# 디비 덤프 복원
+mongorestore --db ansim_me_development ./dump/ansim_me_development
+rm ansim-201401.tar.gz
+rm -rf ./dump/ansim_me_development
+
 bundle install
-rbenv rehash
-rails s
-
-# open http://localhost:3000
-# rock & roll!
-
+rails s -p $PORT -b $IP
 ```
 
 ## 기여하기

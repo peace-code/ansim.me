@@ -40,8 +40,16 @@
           <td><%= hospital.name %></td>
           <td><%= hospital.address %></td>
           <td><%= hospital.phone %></td>
+          <% if hospital.antibiotics == 0 %>
+          <td> - </td>
+          <% else %>
           <td><%= hospital.antibiotics %>등급</td>
+          <% end %>
+          <% if hospital.injections == 0 %>
+          <td> - </td>
+          <% else %>
           <td><%= hospital.injections %>등급</td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

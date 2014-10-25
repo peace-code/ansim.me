@@ -17,8 +17,8 @@
         <li><span class="text-muted"><small>지역  선택</small></span></li>
         <li><%= select_tag(:search_city, options_for_select(['시/도'] + City.all.distinct(:city)), {:class=>"form-control"}) %></li>
         <li><%= select_tag(:search_subcity, options_for_select(['시/군/구']), {:class=>"form-control"}) %></li>
-        <!-- <li><input type='text' placeholder='병원'></li> -->
-        <!-- <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li> -->
+        <li><input type='text' placeholder='병원'></li>
+        <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li>
         <li><span class="text-muted"><small>현재 위치 선택</small></span></li>
         <li><input id='current_pos_btn' type='button' value='현재 위치' class='btn btn-primary'></li>
       </ul>

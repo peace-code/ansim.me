@@ -13,6 +13,7 @@ var Map = function(options) {
     this.data_url = options['data_url'];
     this.data_type = options['data_type'];
     this.pins = options['pins'];
+    this.filter = "whole";
 
     this.type = options['type'] || 'grade';
 
@@ -34,7 +35,7 @@ var Map = function(options) {
         google.maps.event.addListener(map, 'idle', root.fetch_data);
     }
 
-    this.plcae_markers = function(data) {
+    this.place_markers = function(data) {
         var new_makers_count = 0;
             for(var i=0; i < data.length; i++) {
                 var id = data[i]._id;
@@ -46,6 +47,13 @@ var Map = function(options) {
                     for(j in root.categories) {
                         var category = root.categories[j];
                         var value = data[i][category];
+                        if(root.filter == "whole"){
+                            
+                        }else{
+                            if(value != root.filter){
+                                continue;
+                            }
+                        }
                         var coordinates = data[i].coordinates;
                         if (value != '-' && coordinates != null) {
                             var pinImage = root.build_marker_image(value);
@@ -135,13 +143,19 @@ var Map = function(options) {
 
     this.fetch_data = function() {
         var map = this;
-        var bounds = map.getBounds();
+        var bounds;
+        if(map.map === undefined){
+            bounds = map.getBounds();
+        }else{
+            bounds = map.map.getBounds();
+        }
+        //  var bounds = map.getBounds();
         $jqXHR = $.getJSON(root.data_url, {
             type: root.data_type,
             north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
             south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat()
         }).success(function(data) {
-            root.plcae_markers(data);
+            root.place_markers(data);
         });
     }
 
@@ -154,6 +168,14 @@ var Map = function(options) {
         root.info_view.hide();
         root.map.setCenter(point);
         root.map.setZoom(14);
+    }
+    this.clear_markers = function(){
+      for (var i = 0; i < root.markers.length; i++ ) {
+        root.markers[i].marker.setMap(null);
+      }
+      root.markers.length = 0;
+      root.new_makers_count = 0;
+      $(root.info_view).hide();
     }
 
 } // Map end

@@ -1,0 +1,46 @@
+<section class='places index list'>
+
+  <%- model_class = Place -%>
+  <div class="page-header">
+    <h1>
+      <%= @type %>
+      장소 목록
+      <%= content_tag :small, "전체 #{number_with_delimiter(Place.all.count)}건" %>
+    </h1>
+  </div>
+
+  <div class='well'>
+    <%= form_for places_path, method: :get, html: { class: 'form-search', style: 'margin:0' } do |f| %>
+      <div class='input-append'>
+        <input type='text' name='search_name' value='<%= @search_name %>' placeholder='장소 이름' class='input-medium search-query'>
+        <button type='submit'class='btn'>검색</button>
+      </div>
+    <% end %>
+  </div>
+
+  <p>목록을 나열합니다.</p>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>구분</th>
+        <th>이름</th>
+        <th>주소</th>
+        <th>연락처</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @places.each do |place| %>
+        <tr>
+          <td><%= place.type %></td>
+          <td><%= place.name %></td>
+          <td><%= place.address %></td>
+          <td><%= place.phone %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @places %>
+
+</section>

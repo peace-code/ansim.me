@@ -1,34 +1,116 @@
+<div id="myCarousel" class="carousel" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="item active">
+      <!-- <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide"> -->
+      <img src="/111.jpg" alt="" />
+      <div class="container">
+        <div class="carousel-caption">
+          <h1><span>안전한 생활을 위해</span></h1>
+          <p><span>자고로 무관심이 가장 위험한 법입니다.</span></p>
+          <p><a class="btn btn-lg btn-primary" href="#" role="button">눈 부릅!</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
 <div class="row-fluid">
+  <div class='col-sm-9'>
+    <div class='page-header'>
+    	<h1>
+<a name="user-content-%EC%95%88%EC%8B%AC%EC%9D%B4-ansimme" class="anchor" href="#%EC%95%88%EC%8B%AC%EC%9D%B4-ansimme" aria-hidden="true"><span class="octicon octicon-link"></span></a>안심이 ansim.me</h1>
+    </div>
+    
+<article class="markdown-body entry-content" itemprop="mainContentOfPage">
+
+<p>안심이는 시민에게 안전 정보를 제공하는 플랫폼입니다.</p>
+
+<p>2012 8월 공공데이터캠프에서 아이디어를 얻어 구현하였고, 그 이후에 4명의 관심자들이 종종 만나면서 시민이 안심할 수 있도록 하는 데이터를 좀 더 찾아 제공하려고 노력하고 있습니다.</p>
+
+<h2>
+<a name="user-content-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0" class="anchor" href="#%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>개발 환경 구축하기</h2>
+
+<p><code>ruby 2.1.2, rails 4.</code></p>
+
+<h3>
+<a name="user-content-vagrant" class="anchor" href="#vagrant" aria-hidden="true"><span class="octicon octicon-link"></span></a>vagrant!</h3>
+
+<p>요구 사항: <a href="https://www.vagrantup.com">vagrant</a> <a href="https://www.virtualbox.org">virtualbox</a></p>
+
+<pre><code># clone this repo!
+cd ansim.me
+git checkout develop
+vagrant up
+# open http://localhost:3000
+# rock &amp; roll!
+</code></pre>
+
+<h3>
+<a name="user-content-cloud9" class="anchor" href="#cloud9" aria-hidden="true"><span class="octicon octicon-link"></span></a>cloud9.</h3>
+
+<pre><code># go, get your account at c9.io.
+# add workspace.
+
+# install ruby
+rvm install 2.1.2
+gem install bundler
+
+cd ansim.me
+git checkout develop
+
+# 터미널 하나 더 열러서 실행. open new terminal window
+sudo mongod --smallfiles
+
+# 기존 터미널에서 실행. 몽고디비 덤프 내려받아 압축풀기
+cd ./tmp &amp;&amp; curl -O https://dl.dropboxusercontent.com/u/55177834/ansim-2014-1.tar.gz | tar xvz
+tar zxvf ansim-201401.tar.gz
+
+# 디비 덤프 복원
+mongorestore --db ansim_me_development ./dump/ansim_me_development
+rm ansim-201401.tar.gz
+rm -rf ./dump/ansim_me_development
+
+bundle install
+rails s -p $PORT -b $IP
+</code></pre>
+
+<h2>
+<a name="user-content-%EA%B8%B0%EC%97%AC%ED%95%98%EA%B8%B0" class="anchor" href="#%EA%B8%B0%EC%97%AC%ED%95%98%EA%B8%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>기여하기</h2>
+
+<p>우리의 안전을 중요하게 생각하는 분들의 진심어린 참여를 기다리고 있습니다. 현재는 개발자 중심으로 프로젝트를 끌어가고 있습니다만, 불편한 디자인이나 기능, 오작동 등은 <a href="https://github.com/peace-code/ansim.me/issues">이슈</a>를 등록해주시거나 오타를 수정하시고, 코드를 커밋해주시면 @.@!</p>
+
+<ol class="task-list">
+<li>일단 <a href="https://github.com/peace-code/ansim.me/fork">포크</a>하세요!</li>
+<li>피처 브랜치를 만들어요. <code>git checkout -b my-new-feature</code>
+</li>
+<li>수정사항을 커밋하세요. <code>git commit -am 'Add some feature'</code>
+</li>
+<li>만든 피처 브랜치로 푸시하세요 <code>git push origin my-new-feature</code>
+</li>
+<li>땡겨달라고 요청(Pull Request)하세요 :D</li>
+</ol>
+
+<h2>
+<a name="user-content-%EC%9D%B4%EB%A0%A5" class="anchor" href="#%EC%9D%B4%EB%A0%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>이력</h2>
+
+<p>2012년 공공데이터캠프 참가</p>
+
+<h2>
+<a name="user-content-%ED%81%AC%EB%A0%88%EB%94%A7" class="anchor" href="#%ED%81%AC%EB%A0%88%EB%94%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>크레딧</h2>
+
+<p>팀 피스 코드(Team peace code)
+권오현, 이정표, 김성준, 최명진, 홍영택</p>
+
+<h2>
+<a name="user-content-%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4" class="anchor" href="#%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4" aria-hidden="true"><span class="octicon octicon-link"></span></a>라이선스</h2>
+
+<p><a href="https://raw.githubusercontent.com/peace-code/ansim.me/master/BEERWARE-LICENSE">BEERWARE-LICENSE</a></p>
+</article>
+  </div><!-- span9 end -->
+
   <div class="col-sm-3">
     <%= render partial: 'sidebar_about' %>
   </div>
-  <div class='col-sm-9'>
-    <div class='page-header'>
-    	<h1>안심병원 소개</h1>
-    </div>
-
-    <iframe width="560" height="315" src="http://www.youtube.com/embed/zfo8DtAtXYE" frameborder="0" allowfullscreen></iframe>
-
-    <p>요즘 많은 분들이 의원, 병원의 항생제 처방율에 관심을 가지고 있습니다.
-    특히 아이를 키우는 부모라면 더욱 그리하죠.
-    이번에 제작한 "안심병원"은 건강보험 심사평가원의 병원 정보에서 항생제 처방 빈도, 주사제 처방 빈도 등을 크롤링하여 구글맵(또는 우샤히디 플랫폼)에 표시하는 보여주는 서비스입니다.</p>
-
-    <p>지난 8월 공공데이터캠프에서 아이디어를 얻어 구현하였고,
-    그 이후에 4명의 관심자(권오현, 이정표, 김성준, 최명진)들이 종종 만나면서
-    시민이 안심할 수 있도록 하는 데이터를 좀 더 찾아 제공하자고 한 결과,
-    11월까지 안심먹거리와 안심거리(범죄정보) 데이터를 추가하는 중에 있습니다.</p>
-
-    <p>또한 개발자가 아닌 사람도 쉽게 데이터를 추가하여 지도윕에 표시할 수 있도록 하고,
-    개발자들도 안심병원 소스를 이용하여 응용할 수 있도록 범용적인 기능을 제공하는
-    오픈 플랫폼화하는 작업도 진행 중이며, 다음과 같은 기능을 포함하여 공개할 예정입니다.</p>
-
-    <h2>주요 기능</h2>
-
-    <ol>
-    	<li>1.데이터 크롤링 </li>
-    	<li>2.구글맵과 연동 </li>
-    	<li>3.피드백 기능, 수정 기능 </li>
-    	<li>4.모바일 연동(안드로이드, 아이폰)</li>
-    </ol>
-  </div><!-- span9 end -->
 </div><!-- row-fluid end -->
+</div>

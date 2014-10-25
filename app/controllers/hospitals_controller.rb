@@ -19,8 +19,9 @@ class HospitalsController < ApplicationController
     end
   end
 
-  # GET /hospitals/1
-  # GET /hospitals/1.json
+  # example:
+  # GET /hospitals/542bc05b49322892680000e4
+  # GET /hospitals/542bc05b49322892680000e4.json
   def show
     @hospital = Hospital.find(params[:id])
 

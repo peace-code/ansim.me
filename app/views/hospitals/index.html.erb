@@ -3,8 +3,9 @@
   <%- model_class = Hospital -%>
   <div class="page-header">
     <h1>
-      병원 목록
+      <span>안심 병원</span>
       <%= content_tag :small, "전체 #{number_with_delimiter(Hospital.all.count)}건" %>
+      <small><a href="/">지도로 보기</a></small>
     </h1>
   </div>
 

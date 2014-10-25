@@ -96,7 +96,7 @@ var Map = function(options) {
             );
         } else {
             if (this.type == 'grade') {
-                var pinColor = ['', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][value];
+                var pinColor = ['eeeeee', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][value];
                 return new google.maps.MarkerImage(
                     "http://chart.apis.google.com/chart?chst=d_map_pin_letter_withshadow&chld="+value+"|" + pinColor,
                     null,
@@ -128,19 +128,6 @@ var Map = function(options) {
                 $(root.info_view).offset($(root.canvas).offset());
                 $(root.info_view).css('left', '15px');
                 $(root.info_view).css('top', '0px');
-                
-                /*
-                    Event for closing info_view
-                */
-                var a = document.createElement("div");
-                a.style.position="absolute";
-                a.style.right="10px";
-                a.style.top="10px";
-                a.innerHTML = "<button type='button' class='close'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>";
-                a.onclick = function(){
-                    $(root.info_view).hide();
-                };
-                $(root.info_view).append(a);
                 
                 $(root.info_view).show();
             });

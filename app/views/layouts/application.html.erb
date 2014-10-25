@@ -31,6 +31,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><%= link_to "안심병원", hospital_map_path %></li>
+            <li><%= link_to "동네 약국", pharm_map_path %></li>
             <li><%= link_to "심장충격기", aed_map_path %></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -41,11 +42,9 @@
       </div><!--/.navbar -->
     </div><!--/.container-fluid -->
 
-    <div class="container-fluid">
-      <div class="content">
-        <%= yield %>
-      </div><!--/content-->
-    </div>
+    <div class="content">
+      <%= yield %>
+    </div><!--/content-->
 
     <div class="container-fluid">
       <footer class="content">

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-3">
     <div class="well sidebar">
-      <h3>안심병원 <small><a href="/hospitals">표로 보기</a></small></h3>
+      <h3><img src="/ansim_logo.png" alt="" /> 안심병원 <small><a href="/hospitals">표로 보기</a></small></h3>
       <ul class="nav nav-sidebar" style='margin-bottom:2em;'>
         <li style='margin-left:1em;'><span class="text-muted"><small>보고 싶은 데이터를 클릭하세요</small></span></li>
         <li class='<%= 'active' if @type == 'antibiotics' %>'>
@@ -15,11 +15,11 @@
 
       <ul class="nav nav-sidebar" style='margin-left:1em; margin-right:3em;'>
         <li><span class="text-muted"><small>지역  선택</small></span></li>
-        <li><%= select_tag(:search_city, options_for_select(['시/도'] + City.all.distinct(:city)), {:class=>"form-control"}) %></li>
+        <li style="margin: 1em 0"><%= select_tag(:search_city, options_for_select(['시/도'] + City.all.distinct(:city)), {:class=>"form-control"}) %></li>
         <li><%= select_tag(:search_subcity, options_for_select(['시/군/구']), {:class=>"form-control"}) %></li>
-        <li><input type='text' placeholder='병원'></li>
+        <li style="margin: 1em 0"><input type='text' placeholder='병원'></li>
         <li><input id='search_btn' type='button' value='검색' class='btn btn-primary'></li>
-        <li><span class="text-muted"><small>현재 위치 선택</small></span></li>
+        <li style="margin: 1em 0"><span class="text-muted"><small>현재 위치 선택</small></span></li>
         <li><input id='current_pos_btn' type='button' value='현재 위치' class='btn btn-primary'></li>
       </ul>
     </div><!--/.well -->

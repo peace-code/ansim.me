@@ -8,8 +8,13 @@
 
 `ruby 2.1.2, rails 4.`
 
-### vagrant!
-요구 사항: [vagrant](https://www.vagrantup.com) [virtualbox](https://www.virtualbox.org)
+### Vagrant [|veɪgrənt]
+Vagrant는 ruby로 작성한 개발 환경 구축을 위한 도구로써, 개발 환경 구축하는데 드는 시간을 줄일 수 있으며 각각 다른 OS나 환경의 개발자들이 동일한 개발 환경에서 협업할 수 있습니다.
+
+가장 큰 특징은 게스트 OS (vagrant가 제어하는 가상머신)의 자원을 활용하면서 개발자가 사용하는 머신의 호스트 OS에서 소스를 편집할 수 있다는 점입니다. 호스트 OS의 디렉토리를 게스트 OS에 마운트시키고 그 소스를 게스트 OS에서 돌리는 겁니다. 예를 들면 윈도우나 맥을 사용하는 개발자가 리눅스 기반의 환경에서 돌아가는 프로젝트를 이미 사용 중인 개발도구나 소스 편집기를 활용해서 개발할 수 있다는 거죠~
+
+* [vagrant](https://www.vagrantup.com)
+* [virtualbox](https://www.virtualbox.org)
 
 ```
 # clone this repo!
@@ -20,7 +25,8 @@ vagrant up
 # rock & roll!
 ```
 
-### cloud9.
+### cloud 9
+2014 코드나무 해커톤의 열악한 인터넷 환경에서 600MB 이상의 소프트웨어를 내려받을 수가 없어서 그 놈의 클라우드 개발 환경을 구축해서 개발을 진행했습니다. 물론 로컬에서보다 제약이 많지만 플랫폼에 상관없이 누구나 개발에 참여할 수 있습니다.
 ```
 # go, get your account at c9.io.
 # add workspace.
@@ -36,14 +42,16 @@ git checkout develop
 sudo mongod --smallfiles
 
 # 기존 터미널에서 실행. 몽고디비 덤프 내려받아 압축풀기
-cd ./tmp && curl -O https://dl.dropboxusercontent.com/u/55177834/ansim-2014-1.tar.gz | tar xvz
-tar zxvf ansim-201401.tar.gz
+cd ./tmp
+# ansim-2014-2.tar.gz (2014-10-25): 약국 정보 추가
+curl -L https://doc-0c-30-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/u5par7fcic5cv4cshvp4e7fu6t157hkm/1414281600000/09194925479248021352/\*/0B8WezMmea38UWlhNS1lyblk0bHc\?e\=download | tar xvz
 
 # 디비 덤프 복원
 mongorestore --db ansim_me_development ./dump/ansim_me_development
 rm ansim-201401.tar.gz
 rm -rf ./dump/ansim_me_development
 
+# 레일즈 run!
 bundle install
 rails s -p $PORT -b $IP
 ```

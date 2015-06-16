@@ -16,6 +16,8 @@ class Hospital
   field :address
   field :coordinates, type: Array
 
+  field :mers, type: Hash
+
   geocoded_by :address
   after_validation :geocode
 

@@ -5,8 +5,13 @@ class HospitalsController < ApplicationController
     @north_east = params[:north_east].split(',').map(&:to_f) if params[:north_east]
     @south_west = params[:south_west].split(',').map(&:to_f) if params[:south_west]
 
+    puts params
     if @north_east && @south_west
-      @hospitals = Hospital.where(coordinates: {'$within' => {'$box' => [@south_west, @north_east]}}).limit(300)
+      if params['mers'] == "true"
+        @hospitals = Hospital.where({ :mers.ne => nil, coordinates: {'$within' => {'$box' => [@south_west, @north_east]}} }).limit(300)
+      else
+        @hospitals = Hospital.where(coordinates: {'$within' => {'$box' => [@south_west, @north_east]}}).limit(300)
+      end
     else
       @search_name = params[:search_name]
       @hospitals = @search_name ? Hospital.where(name: /#{@search_name}/) : Hospital

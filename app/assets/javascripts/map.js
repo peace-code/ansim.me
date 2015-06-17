@@ -39,8 +39,8 @@ var Map = function(options) {
         var new_makers_count = 0;
             for(var i=0; i < data.length; i++) {
                 var id = data[i]._id;
-                //  console.log(id);
-                //  console.log(data[i]);
+                 // console.log(id);
+                 // console.log(data[i]);
                 if (root.exists_in_markers(id)) {
                     // skip
                 } else {
@@ -93,8 +93,8 @@ var Map = function(options) {
 
     this.build_marker_image = function(value) {
         if (this.pins) {
-            console.log('custom pin mode');
-            console.log(value);
+            // console.log('custom pin mode');
+            // console.log(value);
             var pin_image = this.pins[value];
             return new google.maps.MarkerImage(
                 pin_image,
@@ -153,7 +153,8 @@ var Map = function(options) {
         $jqXHR = $.getJSON(root.data_url, {
             type: root.data_type,
             north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
-            south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat()
+            south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat(),
+            mers: document.getElementById('mers').checked
         }).success(function(data) {
             root.place_markers(data);
         });

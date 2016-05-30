@@ -25,3 +25,6 @@
 .vagrant
 
 .c9
+.rbenv-vars
+shared
+.gems

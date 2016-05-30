@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.6'
 
 # persistent
-gem 'mongoid'
+gem 'mongoid', '~> 4.0', '>= 4.0.2'
 gem 'geocoder'
 gem 'kaminari'
 
@@ -39,3 +39,4 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'puma', group: :production

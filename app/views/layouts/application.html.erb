@@ -30,9 +30,9 @@
         </div><!--/.navbar-header -->
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><%= link_to "안심병원", hospital_map_path %></li>
-            <li><%= link_to "동네 약국", pharm_map_path %></li>
-            <li><%= link_to "심장충격기", aed_map_path %></li>
+            <li<%= ' class=active' if current_page?(hospital_map_path) %>><%= link_to "안심병원", hospital_map_path %></li>
+            <li<%= ' class=active' if current_page?(pharm_map_path) %>><%= link_to "동네 약국", pharm_map_path %></li>
+            <li<%= ' class=active' if current_page?(aed_map_path) %>><%= link_to "심장충격기", aed_map_path %></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><%= link_to "소개", "/pages/about" %></li>

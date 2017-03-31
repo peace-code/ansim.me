@@ -154,7 +154,7 @@ var Map = function(options) {
             type: root.data_type,
             north_east: bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat(),
             south_west: bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat(),
-            mers: document.getElementById('mers').checked
+            mers: $('#mers').checked || ''
         }).success(function(data) {
             root.place_markers(data);
         });

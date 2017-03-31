@@ -2,8 +2,8 @@
   <div class="col-md-3">
     <div class="well sidebar">
       <h3><img src="/ansim_logo.png" alt="" /> 안심병원 <small><a href="/hospitals">표로 보기</a></small></h3>
-      <ul class="nav nav-sidebar" style='margin-bottom:2em;'>
-        <li style='margin-left:1em;'><span class="text-muted"><small>보고 싶은 데이터를 클릭하세요</small></span></li>
+      <ul class="nav nav-sidebar" style='margin-bottom:1em;'>
+        <li style='margin-left:1em; margin-bottom:.5em;'><span class="text-muted"><small>보고 싶은 데이터를 클릭하세요</small></span></li>
         <li class='<%= 'active' if @type == 'antibiotics' %>'>
           <%= link_to '항생제처방률', hospitals_path(type: 'antibiotics'), data: { container: 'body', toggle: 'hover', type:'antibiotics', title: '항생제처방률이란?', content: "감기와 같은 질병은 바이러스가 원인인 경우가 많아 항생제를 복용해도 치료가 빨라지거나 증상이 급격히 좋아지지 않습니다. 대부분 감기에는 항생제가 불필요하므로 항생제를 꼭 필요한 경우에만 처방하는 의료기관이 좋은 의료기관입니다." } %>
         </li>
@@ -12,12 +12,12 @@
         </li>
         <!--<li><a href='#'>진료결과(암수술사망률) - 준비중</a></li>-->
       </ul>
-      <div class="checkbox"><label><input id='mers' type="checkbox" value="1" onchange='javascript:window.map.clear_markers();window.map.fetch_data()'>메르스 안심병원</label></div>
+      <div class="checkbox" style='margin-bottom:1em;'><label><input id='mers' type="checkbox" value="1" onchange='javascript:window.map.clear_markers();window.map.fetch_data()'>메르스 안심병원</label></div>
       <ul class="nav nav-sidebar" style='margin-left:1em; margin-right:3em;'>
-        <li><span class="text-muted"><small>필터</small></span></li>
+        <li><span class="text-muted"><small>등급</small></span></li>
         <li style="margin: 1em 0">
           <select class='form-control' onchange="OnSelectionChange(this)">
-            <option>whole</option>
+            <option>전체</option>
             <option>0</option>
             <option>1</option>
             <option>2</option>

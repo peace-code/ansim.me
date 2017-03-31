@@ -1,11 +1,19 @@
 <section class='places index list'>
-
+  <% case @type %>
+  <% when 'pharm' %>
+  <% term = '동네약국' %>
+  <% when 'aed' %>
+  <% term = '심장충격기'%>
+  <% else %>
+  <% term = '' %>
+  <% end %>
   <%- model_class = Place -%>
   <div class="page-header">
     <h1>
-      <%= @type %>
+      <%= term %>
       장소 목록
       <%= content_tag :small, "전체 #{number_with_delimiter(Place.all.count)}건" %>
+       <small><a href="/maps/<%= @type %>s">지도로 보기</a></small>
     </h1>
   </div>
 
@@ -32,7 +40,7 @@
     <tbody>
       <% @places.each do |place| %>
         <tr>
-          <td><%= place.type %></td>
+          <td><%= term %></td>
           <td><%= place.name %></td>
           <td><%= place.address %></td>
           <td><%= place.phone %></td>

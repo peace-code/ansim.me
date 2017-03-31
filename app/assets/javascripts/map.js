@@ -1,5 +1,3 @@
-document.write('<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>');
-
 var Map = function(options) {
 
     var root = this;
@@ -106,7 +104,7 @@ var Map = function(options) {
             if (this.type == 'grade') {
                 var pinColor = ['eeeeee', "39b54a", "8dc73f", "fff200", "f26522", "ee1c24"][value];
                 return new google.maps.MarkerImage(
-                    "http://chart.apis.google.com/chart?chst=d_map_pin_letter_withshadow&chld="+value+"|" + pinColor,
+                    "//chart.apis.google.com/chart?chst=d_map_pin_letter_withshadow&chld="+value+"|" + pinColor,
                     null,
                     new google.maps.Point(0,0),
                     new google.maps.Point(10, 34)

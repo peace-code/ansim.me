@@ -40,7 +40,13 @@ $(document).ready(function() {
 
   $('#current_pos_btn').on('click', function() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(map.set_center);
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.set_center(pos);
+      });
     } else {
       alert('현재 위치를 가져올 수 없습니다');
     }

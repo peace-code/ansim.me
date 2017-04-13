@@ -13,7 +13,7 @@
       <%= term %>
       장소 목록
       <%= content_tag :small, "전체 #{number_with_delimiter(Place.all.count)}건" %>
-       <small><a href="/maps/<%= @type %>s">지도로 보기</a></small>
+      <% if @type %><small><a href="/maps/<%= @type %>s">지도로 보기</a></small><% end %>
     </h1>
   </div>
 
@@ -21,7 +21,8 @@
     <%= form_for places_path, method: :get, html: { class: 'form-search', style: 'margin:0' } do |f| %>
       <div class='input-append'>
         <input type='text' name='search_name' value='<%= @search_name %>' placeholder='장소 이름' class='input-medium search-query'>
-        <button type='submit'class='btn'>검색</button>
+        <%= hidden_field_tag "type", "#{@type}" %>
+        <button type='submit' class='btn'>검색</button>
       </div>
     <% end %>
   </div>
@@ -40,7 +41,7 @@
     <tbody>
       <% @places.each do |place| %>
         <tr>
-          <td><%= term %></td>
+          <td><%= place.type %></td>
           <td><%= place.name %></td>
           <td><%= place.address %></td>
           <td><%= place.phone %></td>

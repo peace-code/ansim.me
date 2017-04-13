@@ -11,5 +11,5 @@ Rails.application.routes.draw do
   get "pages/about"
   get "pages/other"
 
-  root :to => 'maps#hospitals'
+  root :to => redirect('maps/hospitals')
 end

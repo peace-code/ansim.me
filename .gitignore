@@ -28,3 +28,4 @@
 .rbenv-vars
 shared
 .gems
+/public/assets

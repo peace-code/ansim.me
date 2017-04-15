@@ -11,7 +11,7 @@ var Map = function(options) {
     this.data_url = options['data_url'];
     this.data_type = options['data_type'];
     this.pins = options['pins'];
-    this.filter = "whole";
+    this.filter = "전체";
 
     this.type = options['type'] || 'grade';
 
@@ -35,51 +35,49 @@ var Map = function(options) {
 
     this.place_markers = function(data) {
         var new_makers_count = 0;
-            for(var i=0; i < data.length; i++) {
-                var id = data[i]._id;
-                 // console.log(id);
-                 // console.log(data[i]);
-                if (root.exists_in_markers(id)) {
-                    // skip
-                } else {
-                    for(j in root.categories) {
-                        var category = root.categories[j];
-                        var value = data[i][category];
-                        if(root.filter == "whole"){
-                            
-                        }else{
-                            if(value != root.filter){
-                                continue;
-                            }
+        // console.log(root.filter);
+        for(var i=0; i < data.length; i++) {
+            var id = data[i]._id;
+             // console.log(id);
+             // console.log(data[i]);
+            if (!root.exists_in_markers(id)) {
+                for(j in root.categories) {
+                    var category = root.categories[j];
+                    var value = data[i][category];
+                    // console.log(category);
+                    // console.log(value);
+                    if(root.filter != "전체" && value != root.filter) {
+                        // console.log(value, root.filter);
+                        continue;
+                    }
+                    var coordinates = data[i].coordinates;
+                    if (value != '-' && coordinates != null) {
+                        var pinImage = root.build_marker_image(value);
+
+                        var n_marker = new google.maps.Marker({
+                            mid         : data[i]._id,
+                            map         : root.map,
+                            position    : new google.maps.LatLng(coordinates[1], coordinates[0]),
+                            icon        : pinImage,
+                            title       : data[i].name,
+                            category    : category
+                        });
+
+                        if (category != root.current_category) {
+                            n_marker.setVisible(false);
                         }
-                        var coordinates = data[i].coordinates;
-                        if (value != '-' && coordinates != null) {
-                            var pinImage = root.build_marker_image(value);
+                        google.maps.event.addListener(n_marker, 'click', function() {
+                            var m_id = this.mid;
+                            root.show_info_view(m_id["$oid"]);
+                        });
 
-                            var n_marker = new google.maps.Marker({
-                                mid         : data[i]._id,
-                                map         : root.map,
-                                position    : new google.maps.LatLng(coordinates[1], coordinates[0]),
-                                icon        : pinImage,
-                                title       : data[i].name,
-                                category    : category
-                            });
-
-                            if (category != root.current_category) {
-                                n_marker.setVisible(false);
-                            }
-                            google.maps.event.addListener(n_marker, 'click', function() {
-                                var m_id = this.mid;
-                                root.show_info_view(m_id["$oid"]);
-                            });
-
-                            root.markers.push({ id: id, marker: n_marker });
-                            new_makers_count++;
-                        }
-                    } // for
-                } // else
-            } // for
-        console.log("load " + data.length + " data & new "+ new_makers_count +" markers");
+                        root.markers.push({ id: id, marker: n_marker });
+                        new_makers_count++;
+                    }
+                } // for
+            } // else
+        } // for
+        // console.log("load " + data.length + " data & new "+ new_makers_count +" markers");
     }
 
     this.exists_in_markers = function(id) {

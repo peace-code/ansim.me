@@ -28,8 +28,11 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
-    bootstrap-sass (3.2.0.2)
-      sass (~> 3.2)
+    autoprefixer-rails (10.4.19.0)
+      execjs (~> 2)
+    bootstrap-sass (3.4.1)
+      autoprefixer-rails (>= 5.2.1)
+      sassc (>= 2.0.0)
     bootstrap_form (2.3.0)
     bson (3.2.6)
     builder (3.2.2)
@@ -43,6 +46,7 @@ GEM
     connection_pool (2.2.0)
     erubis (2.7.0)
     execjs (2.7.0)
+    ffi (1.17.0)
     geocoder (1.3.5)
     haml (4.0.7)
       tilt
@@ -120,6 +124,8 @@ GEM
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 3.0)
       sprockets-rails (~> 2.0)
+    sassc (2.4.0)
+      ffi (~> 1.9)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -149,7 +155,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap-sass (~> 3.2.0)
+  bootstrap-sass (~> 3.4.1)
   bootstrap_form
   coffee-rails (~> 4.0.0)
   geocoder
